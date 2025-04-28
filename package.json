@@ -1,0 +1,15 @@
+{
+  "name": "dungeons-of-daggorath",
+  "version": "1.0.0",
+  "description": "a port of dungeons of daggorath on the color computer",
+  "license": "ISC",
+  "author": "Aaron DeWitt",
+  "type": "commonjs",
+  "main": "scritp.js",
+  "scripts": {
+    "start": "web-dev-server --node-resolve --app-index ./index.html --open --watch"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.4.4"
+  }
+}
