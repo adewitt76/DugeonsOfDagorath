@@ -1,6 +1,7 @@
 // @ts-check
 
 import { print_character } from "../models/font";
+import { CommandManager } from "./command_manager";
 import { Painter } from "./painter";
 
 export class Console {
@@ -14,19 +15,23 @@ export class Console {
   /** @private @type { boolean } */
   _colors_inverted;
 
-  /** @private @type { string[][] } */
-  _input_buffers;
+  /** @private @type { string[] } */
+  _history_buffer;
 
-  /** @private @type { number } */
-  _buffer_pointer;
+  /** @private @type { string[] } */
+  _input_buffer;
+
+  /** @private @type { CommandManager } */
+  _command_manager;
 
   /** @private */
   constructor() {
     this._painter = new Painter();
     this._colors_inverted = false;
-    this._input_buffers = [];
-    this._input_buffers.push([]);
+    this._input_buffer = [];
+    this._history_buffer = [];
     this._buffer_pointer = 0;
+    this._command_manager = CommandManager.instance;
     document.addEventListener('keydown', this.process_keyboard_events)
   }
 
@@ -49,36 +54,6 @@ export class Console {
   }
 
   /**
-   * Process keydown events
-   * @param { KeyboardEvent } event
-   * @private
-   */
-  process_keyboard_events = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (/[A-Za-z\s]{1}/.test(event.key) && event.key.length === 1) {
-      if (this._input_buffers[this._buffer_pointer].length < 35) {
-        this._input_buffers[this._buffer_pointer].push(event.key);
-      }
-    }
-
-    if (event.key === 'Backspace') this._input_buffers[this._buffer_pointer].pop();
-
-    if (event.key === 'Enter') {
-      const command = this._input_buffers[this._buffer_pointer].join('');
-      if (this._buffer_pointer === 3) {
-        this._input_buffers.shift();
-      } else {
-        this._buffer_pointer++;
-      }
-      this._input_buffers.push([]);
-
-      console.log('command', command);
-    }
-  }
-
-  /**
    * Paint the status bar.
    * @return { void }
    */
@@ -95,12 +70,53 @@ export class Console {
     }
 
     // draw characters in buffers
+    let history_index = 0;
     const line_location = [161, 169, 177, 185];
-    this._input_buffers.forEach((buffer, index) => {
-      index = this._input_buffers.length < 4 ? index + 1 : index;
-      let line_y = line_location[index];
+    this._history_buffer.forEach((buffer, index) => {
+      history_index = this._history_buffer.length < 3 ? index + 1 : index;
+      let line_y = line_location[history_index];
       print_character('_', 0, line_y, this._colors_inverted);
-      buffer.forEach((c, i) => print_character(c, (i * 7) + 7, line_y, this._colors_inverted));
+      buffer.split('').forEach((c, i) => print_character(c, (i * 7) + 7, line_y, this._colors_inverted));
     });
+    history_index++;
+    let line_y = line_location[history_index];
+    print_character('_', 0, line_y, this._colors_inverted);
+    this._input_buffer.forEach((c, i) => print_character(c, (i * 7) + 7, line_y, this._colors_inverted));
+  }
+
+  /**
+   * Append a message to the end of the last command
+   * @param { string } message
+   */
+  append(message) {
+    this._history_buffer[this._history_buffer.length - 1] += " " + message;
+  }
+
+  /**
+   * Process keydown events
+   * @param { KeyboardEvent } event
+   * @private
+   */
+  process_keyboard_events = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (/[A-Za-z\s]{1}/.test(event.key) && event.key.length === 1) {
+      if (this._input_buffer.length < 35) {
+        this._input_buffer.push(event.key);
+      }
+    }
+
+    if (event.key === 'Backspace') this._input_buffer.pop();
+
+    if (event.key === 'Enter') {
+      const command = this._input_buffer.join('');
+      this._history_buffer.push(command);
+      if (this._history_buffer.length === 4) {
+        this._history_buffer.shift();
+      }
+      this._input_buffer = [];
+      this._command_manager.process(command);
+    }
   }
 }

@@ -33,9 +33,9 @@ export class CellView {
    * Paint the given cell
    * @param { Cell } cell 
    * @param { number } distance the distance in cells from view
-   * @param { number } direction the view direction
+   * @param { DIRECTION } direction the view direction
    */
-  paintCell(cell, distance, direction) {
+  paint(cell, distance, direction) {
     let /** @type { WALL_TYPE } */ left;
     let /** @type { WALL_TYPE } */ right;
     let /** @type { WALL_TYPE } */ forward;
@@ -67,7 +67,7 @@ export class CellView {
     // 1. paint forward
     switch (forward) {
       case WALL_TYPE.open:
-        this.paintCell(cell.cells[direction], distance + 1, direction);
+        this.paint(cell.cells[/** @type {number} */(direction)], distance + 1, direction);
         break;
       case WALL_TYPE.solid:
         this.drawSolidWall(distance);
