@@ -14,6 +14,9 @@ export class CellView {
   /** @private @type { Painter } */
   _painter;
 
+  /** @private @type { number[] } */
+  _light_level = [1, 1, 1, 1, 2, 8, 0, 0, 0];
+
   /** @private */
   constructor() {
     this._painter = new Painter();
@@ -67,12 +70,14 @@ export class CellView {
     // 1. paint forward
     switch (forward) {
       case WALL_TYPE.open:
+        if (distance > 7) return;
         this.paint(cell.cells[/** @type {number} */(direction)], distance + 1, direction);
         break;
       case WALL_TYPE.solid:
         this.drawSolidWall(distance);
         break;
       case WALL_TYPE.normal_door:
+        this.drawDoorForward(distance)
         break;
       case WALL_TYPE.magic_door:
         break;
@@ -87,6 +92,7 @@ export class CellView {
         this.drawSolidWallRight(distance);
         break;
       case WALL_TYPE.normal_door:
+        this.drawDoorRight(distance);
         break;
       case WALL_TYPE.magic_door:
         break;
@@ -101,6 +107,7 @@ export class CellView {
         this.drawSolidWallLeft(distance);
         break;
       case WALL_TYPE.normal_door:
+        this.drawDoorLeft(distance);
         break;
       case WALL_TYPE.magic_door:
         break;
@@ -123,7 +130,7 @@ export class CellView {
   ceiling(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(47, 28);
     this._painter.lineTo(210, 28);
   }
@@ -136,7 +143,7 @@ export class CellView {
   drawSolidWall(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(64, 38);
     this._painter.lineTo(192, 38);
     this._painter.moveTo(64, 114);
@@ -151,7 +158,7 @@ export class CellView {
   drawSolidWallLeft(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(27, 16);
     this._painter.lineTo(64, 38);
     this._painter.lineTo(64, 114);
@@ -166,7 +173,7 @@ export class CellView {
   drawSolidWallRight(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(229, 16);
     this._painter.lineTo(192, 38);
     this._painter.lineTo(192, 114);
@@ -181,7 +188,7 @@ export class CellView {
   drawOpenWallLeft(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(29, 38);
     this._painter.lineTo(64, 38);
     this._painter.lineTo(64, 114);
@@ -198,12 +205,57 @@ export class CellView {
   drawOpenWallRight(distance) {
     this._painter.distance = distance;
     this._painter.color = 'white';
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = this._light_level[distance];
     this._painter.moveTo(229, 38);
     this._painter.lineTo(192, 38);
     this._painter.lineTo(192, 114);
     this._painter.lineTo(229, 114);
     this._painter.moveTo(229, 16);
     this._painter.lineTo(192, 38);
+  }
+
+  /**
+   * Draw a door wall in front
+   * @param { number } distance the distance to determine light level
+   * @private
+   */
+  drawDoorForward(distance) {
+    this.drawSolidWall(distance);
+    this._painter.moveTo(108, 114);
+    this._painter.lineTo(108, 67);
+    this._painter.lineTo(148, 67);
+    this._painter.lineTo(148, 114);
+    this._painter.moveTo(126, 94);
+    this._painter.lineTo(130, 94);
+  }
+
+  /**
+   * Draw a door wall on the right
+   * @param { number } distance the distance to determine light level
+   * @private
+   */
+  drawDoorRight(distance) {
+    this.drawSolidWallRight(distance);
+    this._painter.moveTo(216, 128);
+    this._painter.lineTo(216, 65);
+    this._painter.lineTo(200, 68);
+    this._painter.lineTo(200, 119);
+    this._painter.moveTo(208, 92);
+    this._painter.lineTo(204, 93);
+  }
+
+  /**
+   * Draw a door wall on the left
+   * @param { number } distance the distance to determine light level
+   * @private
+   */
+  drawDoorLeft(distance) {
+    this.drawSolidWallLeft(distance);
+    this._painter.moveTo(40, 128);
+    this._painter.lineTo(40, 65);
+    this._painter.lineTo(56, 68);
+    this._painter.lineTo(56, 119);
+    this._painter.moveTo(48, 92);
+    this._painter.lineTo(52, 93);
   }
 }

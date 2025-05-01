@@ -29,7 +29,7 @@ const lunar_torch_full = [1, 1, 1, 1, 2, 8, 0, 0];
 const solar_torch_full = [1, 1, 1, 1, 1, 1, 1, 1];
 
 const test_level = TestLevel.instance;
-const player = Player.initialize(new Point(0, 1), DIRECTION.south);
+const player = Player.initialize(new Point(5, 8), DIRECTION.north);
 
 setInterval(() => {
   let torch = pine_torch_full;

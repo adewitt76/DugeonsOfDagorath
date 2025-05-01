@@ -84,6 +84,7 @@ export class Player {
         this._position = new Point(this.position.x - 1, this.position.y);
         break;
     }
+    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveBackward() {
@@ -106,6 +107,7 @@ export class Player {
         this._position = new Point(this.position.x + 1, this.position.y);
         break;
     }
+    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveRight() {
@@ -128,6 +130,7 @@ export class Player {
         this._position = new Point(this.position.x, this.position.y - 1);
         break;
     }
+    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveLeft() {
@@ -150,6 +153,7 @@ export class Player {
         this._position = new Point(this.position.x, this.position.y + 1);
         break;
     }
+    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   turnLeft() {

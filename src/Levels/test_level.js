@@ -51,191 +51,253 @@ export class TestLevel extends Level {
   */
 function get_test_level() {
   const cells = [
-    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell()],
-    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell()],
-    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell()],
-    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell()],
-    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell()],
+    //     0           1           2             3           4          5           6           7              8           9          10 
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  0
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  1
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  2
+
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  3
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  4
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  5
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  6
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  7
+
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  8
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], //  9
+    [new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell()], // 10
   ]
+  ////////////////
+  cells[0][5].is_empty = false;
+  cells[0][5].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[0][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[0][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[0][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[0][5].cells[DIRECTION.south] = cells[1][5];
 
   ///////////////
-  cells[0][0].is_empty = false;
-  cells[0][0].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[0][0].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[0][0].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[0][0].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[0][0].cells[DIRECTION.south] = cells[1][0];
-  cells[0][0].cells[DIRECTION.east] = cells[0][1];
+  cells[1][5].is_empty = false;
+  cells[1][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[1][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[1][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[1][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[1][5].cells[DIRECTION.north] = cells[0][5];
+  cells[1][5].cells[DIRECTION.south] = cells[2][5];
 
-  cells[0][1].is_empty = false;
-  cells[0][1].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[0][1].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[0][1].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[0][1].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[0][1].cells[DIRECTION.east] = cells[0][2];
-  cells[0][1].cells[DIRECTION.west] = cells[0][0];
+  ///////////////
+  cells[2][5].is_empty = false;
+  cells[2][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[2][5].walls[DIRECTION.south] = WALL_TYPE.normal_door;
+  cells[2][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[2][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[2][5].cells[DIRECTION.north] = cells[1][5];
+  cells[2][5].cells[DIRECTION.south] = cells[3][5];
 
-  cells[0][2].is_empty = false;
-  cells[0][2].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[0][2].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[0][2].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[0][2].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[0][2].cells[DIRECTION.south] = cells[1][2];
-  cells[0][2].cells[DIRECTION.east] = cells[0][3];
-  cells[0][2].cells[DIRECTION.west] = cells[0][1];
-
-  cells[0][3].is_empty = false;
-  cells[0][3].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[0][3].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[0][3].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[0][3].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[0][3].cells[DIRECTION.east] = cells[0][4];
-  cells[0][3].cells[DIRECTION.west] = cells[0][2];
-
-  cells[0][4].is_empty = false;
-  cells[0][4].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[0][4].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[0][4].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[0][4].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[0][4].cells[DIRECTION.south] = cells[1][4];
-  cells[0][4].cells[DIRECTION.west] = cells[0][3];
-
-  ///////////////////////////////
-  cells[1][0].is_empty = false;
-  cells[1][0].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[1][0].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[1][0].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[1][0].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[1][0].cells[DIRECTION.north] = cells[0][0];
-  cells[1][0].cells[DIRECTION.south] = cells[2][0];
-
-  cells[1][2].is_empty = false;
-  cells[1][2].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[1][2].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[1][2].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[1][2].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[1][2].cells[DIRECTION.north] = cells[0][2];
-  cells[1][2].cells[DIRECTION.south] = cells[2][2];
-
-  cells[1][4].is_empty = false;
-  cells[1][4].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[1][4].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[1][4].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[1][4].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[1][4].cells[DIRECTION.north] = cells[0][4];
-  cells[1][4].cells[DIRECTION.south] = cells[2][4];
-
-  ///////////////////////////////
-  cells[2][0].is_empty = false;
-  cells[2][0].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[2][0].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[2][0].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[2][0].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[2][0].cells[DIRECTION.north] = cells[1][0];
-  cells[2][0].cells[DIRECTION.south] = cells[3][0];
-  cells[2][0].cells[DIRECTION.east] = cells[2][1];
-
-  cells[2][1].is_empty = false;
-  cells[2][1].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[2][1].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[2][1].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[2][1].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[2][1].cells[DIRECTION.east] = cells[2][2];
-  cells[2][1].cells[DIRECTION.west] = cells[2][0];
-
-  cells[2][2].is_empty = false;
-  cells[2][2].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[2][2].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[2][2].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[2][2].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[2][2].cells[DIRECTION.north] = cells[1][2];
-  cells[2][2].cells[DIRECTION.south] = cells[3][2];
-  cells[2][2].cells[DIRECTION.east] = cells[2][3];
-  cells[2][2].cells[DIRECTION.west] = cells[2][1];
-
-  cells[2][3].is_empty = false;
-  cells[2][3].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[2][3].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[2][3].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[2][3].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[2][3].cells[DIRECTION.east] = cells[2][4];
-  cells[2][3].cells[DIRECTION.west] = cells[2][2];
-
-  cells[2][4].is_empty = false;
-  cells[2][4].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[2][4].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[2][4].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[2][4].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[2][4].cells[DIRECTION.north] = cells[1][4];
-  cells[2][4].cells[DIRECTION.south] = cells[3][4];
-  cells[2][4].cells[DIRECTION.west] = cells[2][3];
-
-  ///////////////////////////////
-  cells[3][0].is_empty = false;
-  cells[3][0].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[3][0].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[3][0].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[3][0].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[3][0].cells[DIRECTION.north] = cells[2][0];
-  cells[3][0].cells[DIRECTION.south] = cells[4][0];
-
-  cells[3][2].is_empty = false;
-  cells[3][2].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[3][2].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[3][2].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[3][2].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[3][2].cells[DIRECTION.north] = cells[2][2];
-  cells[3][2].cells[DIRECTION.south] = cells[4][2];
+  ///////////////
+  cells[3][3].is_empty = false;
+  cells[3][3].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[3][3].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[3][3].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[3][3].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[3][3].cells[DIRECTION.south] = cells[4][3];
+  cells[3][3].cells[DIRECTION.east] = cells[3][4];
 
   cells[3][4].is_empty = false;
-  cells[3][4].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[3][4].walls[DIRECTION.south] = WALL_TYPE.open;
-  cells[3][4].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[3][4].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[3][4].cells[DIRECTION.north] = cells[2][4];
-  cells[3][4].cells[DIRECTION.south] = cells[4][4];
+  cells[3][4].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[3][4].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[3][4].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[3][4].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[3][4].cells[DIRECTION.east] = cells[3][5];
+  cells[3][4].cells[DIRECTION.west] = cells[3][3];
+
+  cells[3][5].is_empty = false;
+  cells[3][5].walls[DIRECTION.north] = WALL_TYPE.normal_door;
+  cells[3][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[3][5].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[3][5].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[3][5].cells[DIRECTION.north] = cells[2][5];
+  cells[3][5].cells[DIRECTION.south] = cells[4][5];
+  cells[3][5].cells[DIRECTION.east] = cells[3][6];
+  cells[3][5].cells[DIRECTION.west] = cells[3][4];
+
+  cells[3][6].is_empty = false;
+  cells[3][6].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[3][6].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[3][6].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[3][6].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[3][6].cells[DIRECTION.east] = cells[3][7];
+  cells[3][6].cells[DIRECTION.west] = cells[3][5];
+
+  cells[3][7].is_empty = false;
+  cells[3][7].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[3][7].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[3][7].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[3][7].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[3][7].cells[DIRECTION.south] = cells[4][7];
+  cells[3][7].cells[DIRECTION.west] = cells[3][6];
+
+  ///////////////////////////////
+  cells[4][3].is_empty = false;
+  cells[4][3].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[4][3].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[4][3].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[4][3].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[4][3].cells[DIRECTION.north] = cells[3][3];
+  cells[4][3].cells[DIRECTION.south] = cells[5][3];
+
+  cells[4][5].is_empty = false;
+  cells[4][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[4][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[4][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[4][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[4][5].cells[DIRECTION.north] = cells[3][5];
+  cells[4][5].cells[DIRECTION.south] = cells[5][5];
+
+  cells[4][7].is_empty = false;
+  cells[4][7].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[4][7].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[4][7].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[4][7].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[4][7].cells[DIRECTION.north] = cells[3][7];
+  cells[4][7].cells[DIRECTION.south] = cells[5][7];
+
+  ///////////////////////////////
+  cells[5][3].is_empty = false;
+  cells[5][3].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[5][3].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[5][3].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[5][3].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[5][3].cells[DIRECTION.north] = cells[4][3];
+  cells[5][3].cells[DIRECTION.south] = cells[6][3];
+  cells[5][3].cells[DIRECTION.east] = cells[5][4];
+
+  cells[5][4].is_empty = false;
+  cells[5][4].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[5][4].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[5][4].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[5][4].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[5][4].cells[DIRECTION.east] = cells[5][5];
+  cells[5][4].cells[DIRECTION.west] = cells[5][3];
+
+  cells[5][5].is_empty = false;
+  cells[5][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[5][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[5][5].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[5][5].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[5][5].cells[DIRECTION.north] = cells[4][5];
+  cells[5][5].cells[DIRECTION.south] = cells[6][5];
+  cells[5][5].cells[DIRECTION.east] = cells[5][6];
+  cells[5][5].cells[DIRECTION.west] = cells[5][4];
+
+  cells[5][6].is_empty = false;
+  cells[5][6].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[5][6].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[5][6].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[5][6].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[5][6].cells[DIRECTION.east] = cells[5][7];
+  cells[5][6].cells[DIRECTION.west] = cells[5][5];
+
+  cells[5][7].is_empty = false;
+  cells[5][7].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[5][7].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[5][7].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[5][7].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[5][7].cells[DIRECTION.north] = cells[4][7];
+  cells[5][7].cells[DIRECTION.south] = cells[6][7];
+  cells[5][7].cells[DIRECTION.west] = cells[5][6];
+
+  ///////////////////////////////
+  cells[6][3].is_empty = false;
+  cells[6][3].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[6][3].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[6][3].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[6][3].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[6][3].cells[DIRECTION.north] = cells[5][3];
+  cells[6][3].cells[DIRECTION.south] = cells[7][3];
+
+  cells[6][5].is_empty = false;
+  cells[6][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[6][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[6][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[6][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[6][5].cells[DIRECTION.north] = cells[5][5];
+  cells[6][5].cells[DIRECTION.south] = cells[7][5];
+
+  cells[6][7].is_empty = false;
+  cells[6][7].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[6][7].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[6][7].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[6][7].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[6][7].cells[DIRECTION.north] = cells[5][7];
+  cells[6][7].cells[DIRECTION.south] = cells[7][7];
 
   /////////////////////////////////////
-  cells[4][0].is_empty = false;
-  cells[4][0].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[4][0].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[4][0].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[4][0].walls[DIRECTION.west] = WALL_TYPE.solid;
-  cells[4][0].cells[DIRECTION.north] = cells[3][0];
-  cells[4][0].cells[DIRECTION.east] = cells[4][1];
+  cells[7][3].is_empty = false;
+  cells[7][3].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[7][3].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[7][3].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[7][3].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[7][3].cells[DIRECTION.north] = cells[6][3];
+  cells[7][3].cells[DIRECTION.east] = cells[7][4];
 
-  cells[4][1].is_empty = false;
-  cells[4][1].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[4][1].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[4][1].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[4][1].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[4][1].cells[DIRECTION.east] = cells[4][2];
-  cells[4][1].cells[DIRECTION.west] = cells[4][0];
+  cells[7][4].is_empty = false;
+  cells[7][4].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[7][4].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[7][4].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[7][4].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[7][4].cells[DIRECTION.east] = cells[7][5];
+  cells[7][4].cells[DIRECTION.west] = cells[7][3];
 
-  cells[4][2].is_empty = false;
-  cells[4][2].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[4][2].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[4][2].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[4][2].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[4][2].cells[DIRECTION.north] = cells[3][2];
-  cells[4][2].cells[DIRECTION.east] = cells[4][3];
-  cells[4][2].cells[DIRECTION.west] = cells[4][1];
+  cells[7][5].is_empty = false;
+  cells[7][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[7][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[7][5].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[7][5].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[7][5].cells[DIRECTION.north] = cells[6][5];
+  cells[7][5].cells[DIRECTION.south] = cells[8][5];
+  cells[7][5].cells[DIRECTION.east] = cells[7][6];
+  cells[7][5].cells[DIRECTION.west] = cells[7][4];
 
-  cells[4][3].is_empty = false;
-  cells[4][3].walls[DIRECTION.north] = WALL_TYPE.solid;
-  cells[4][3].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[4][3].walls[DIRECTION.east] = WALL_TYPE.open;
-  cells[4][3].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[4][3].cells[DIRECTION.east] = cells[4][4];
-  cells[4][3].cells[DIRECTION.west] = cells[4][2];
+  cells[7][6].is_empty = false;
+  cells[7][6].walls[DIRECTION.north] = WALL_TYPE.solid;
+  cells[7][6].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[7][6].walls[DIRECTION.east] = WALL_TYPE.open;
+  cells[7][6].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[7][6].cells[DIRECTION.east] = cells[7][7];
+  cells[7][6].cells[DIRECTION.west] = cells[7][5];
 
-  cells[4][4].is_empty = false;
-  cells[4][4].walls[DIRECTION.north] = WALL_TYPE.open;
-  cells[4][4].walls[DIRECTION.south] = WALL_TYPE.solid;
-  cells[4][4].walls[DIRECTION.east] = WALL_TYPE.solid;
-  cells[4][4].walls[DIRECTION.west] = WALL_TYPE.open;
-  cells[4][4].cells[DIRECTION.north] = cells[3][4];
-  cells[4][4].cells[DIRECTION.west] = cells[4][3];
+  cells[7][7].is_empty = false;
+  cells[7][7].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[7][7].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[7][7].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[7][7].walls[DIRECTION.west] = WALL_TYPE.open;
+  cells[7][7].cells[DIRECTION.north] = cells[6][7];
+  cells[7][7].cells[DIRECTION.west] = cells[7][6];
+
+  ////////////////
+  cells[8][5].is_empty = false;
+  cells[8][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[8][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[8][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[8][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[8][5].cells[DIRECTION.north] = cells[7][5];
+  cells[8][5].cells[DIRECTION.south] = cells[9][5];
+
+  ///////////////
+  cells[9][5].is_empty = false;
+  cells[9][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[9][5].walls[DIRECTION.south] = WALL_TYPE.open;
+  cells[9][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[9][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[9][5].cells[DIRECTION.north] = cells[8][5];
+  cells[9][5].cells[DIRECTION.south] = cells[10][5];
+
+  ///////////////
+  cells[10][5].is_empty = false;
+  cells[10][5].walls[DIRECTION.north] = WALL_TYPE.open;
+  cells[10][5].walls[DIRECTION.south] = WALL_TYPE.solid;
+  cells[10][5].walls[DIRECTION.east] = WALL_TYPE.solid;
+  cells[10][5].walls[DIRECTION.west] = WALL_TYPE.solid;
+  cells[10][5].cells[DIRECTION.north] = cells[9][5];
 
   return cells;
 }

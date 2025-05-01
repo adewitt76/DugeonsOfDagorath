@@ -11,6 +11,7 @@ const SCALING_TABLE = {
   5: [35, 111, 67],
   6: [21, 118, 71],
   7: [11, 123, 75],
+  8: [7, 125, 76],
 }
 
 export class Painter {
