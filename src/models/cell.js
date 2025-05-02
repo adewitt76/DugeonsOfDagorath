@@ -20,18 +20,26 @@ export class ROOM_CENTER {
 };
 
 export class Cell {
+  constructor() {
+    this.is_empty = true;
+    this.cells = [];
+    this.walls = [];
+    this.center = ROOM_CENTER.normal;
+    this.inventory = [];
+  }
+
   /** @type { boolean } */
-  is_empty = true;
+  is_empty;
 
   /** @type { Cell[] } connecting cells N,S,E,W **/
-  cells = [];
+  cells;
 
   /** @type { WALL_TYPE[] } */
-  walls = [];
+  walls;
 
   /** @type { ROOM_CENTER } */
-  center = ROOM_CENTER.normal;
+  center;
 
   /** @type { Item[] } */
-  inventory = [];
+  inventory;
 }

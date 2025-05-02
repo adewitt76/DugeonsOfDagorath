@@ -35,6 +35,22 @@ export class TestLevel extends Level {
   getCell(x, y) {
     return this._cells[y][x];
   }
+
+  /**
+   * Get the cell grid
+   * @returns { Cell[][] }
+   */
+  get cells() {
+    return this._cells;
+  }
+
+  /**
+   * Get the cell grid
+   * @param { Cell[][] } cells
+   */
+  set cells(cells) {
+    this._cells = cells;
+  }
 }
 
 /**
