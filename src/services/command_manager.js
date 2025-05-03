@@ -1,6 +1,6 @@
 // @ts-check
-import { Player } from "../models/player";
-import { Console } from "./console";
+import { Player, PLAYER_VIEW } from "../models/player";
+import { Console } from "./view_console";
 
 export class CommandManager {
 
@@ -28,6 +28,7 @@ export class CommandManager {
    */
   process(command) {
     const parsed_command = command.trim().toLowerCase().split(' ');
+    this._player.view = PLAYER_VIEW.main_view;
     switch (parsed_command[0]) {
       case 'move':
       case 'm':
@@ -36,6 +37,9 @@ export class CommandManager {
       case 'turn':
       case 't':
         this.process_turn_command(parsed_command);
+        break;
+      case 'use':
+        this.process_use_command(parsed_command);
         break;
       default:
         Console.instance.append("???");
@@ -90,6 +94,19 @@ export class CommandManager {
         break;
       default:
         Console.instance.append("???");
+    }
+  }
+
+  /**
+   * Process a move command
+   * @param { string[] } command 
+   * @private
+   */
+  process_use_command(command) {
+    switch (command[1]) {
+      case 'scroll':
+        this._player.view = PLAYER_VIEW.map_view;
+        break;
     }
   }
 }

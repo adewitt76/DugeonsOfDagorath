@@ -189,7 +189,7 @@ export class CellView {
     this._painter.distance = distance;
     this._painter.color = 'white';
     this._painter.lightLevel = this._light_level[distance];
-    this._painter.moveTo(29, 38);
+    this._painter.moveTo(26, 38);
     this._painter.lineTo(64, 38);
     this._painter.lineTo(64, 114);
     this._painter.lineTo(27, 114);

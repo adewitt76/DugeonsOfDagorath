@@ -1,8 +1,13 @@
 // @ts-check
-import { TestLevel } from "../Levels/test_level";
+import { MapView } from "../services/view_map";
+import { LevelList } from "../Levels/level_list";
 import { DIRECTION, WALL_TYPE } from "./cell";
 import { Point } from "./point";
 
+export const PLAYER_VIEW = Object.freeze({
+  main_view: 'main_view',
+  map_view: 'map_view',
+})
 export class Player {
 
   /** @private @type { Player } */
@@ -11,10 +16,16 @@ export class Player {
   /** @private @type { Point } */
   _position;
 
+  /** @private @type { number } */
+  _level;
+
   /** @private @type { DIRECTION } */
   _direction;
 
-  /** @private @type { any[] } */
+  /** @private @type { string } */
+  _view;
+
+  /** @private @type {{ scroll: MapView }} */
   _items;
 
   /**
@@ -25,6 +36,9 @@ export class Player {
   constructor(position, direction) {
     this._position = position;
     this._direction = direction;
+    this._level = 1;
+    this._view = PLAYER_VIEW.main_view;
+    this._items = { scroll: new MapView() };
   }
 
   /**
@@ -57,6 +71,35 @@ export class Player {
   }
 
   /**
+   * Sets the current position of the Player
+   * @return { number } 
+   */
+  get level() {
+    return this._level;
+  }
+
+  /** The current players view
+    * @return { string }
+    */
+  get view() {
+    return this._view;
+  }
+
+  /** The current players view
+    * @param { string } view
+    */
+  set view(view) {
+    this._view = view;
+  }
+
+  /** The current players items
+    *  @type {{ scroll: MapView }} 
+    */
+  get items() {
+    return this._items;
+  }
+
+  /**
    * The direction the player is pointed
    * @return { DIRECTION }
    */
@@ -65,7 +108,7 @@ export class Player {
   }
 
   moveForward() {
-    const current_cell = TestLevel.instance.getCell(this.position.x, this.position.y);
+    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.north] === WALL_TYPE.solid) return;
@@ -88,7 +131,7 @@ export class Player {
   }
 
   moveBackward() {
-    const current_cell = TestLevel.instance.getCell(this.position.x, this.position.y);
+    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.south] === WALL_TYPE.solid) return;
@@ -111,7 +154,7 @@ export class Player {
   }
 
   moveRight() {
-    const current_cell = TestLevel.instance.getCell(this.position.x, this.position.y);
+    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.east] === WALL_TYPE.solid) return;
@@ -134,7 +177,7 @@ export class Player {
   }
 
   moveLeft() {
-    const current_cell = TestLevel.instance.getCell(this.position.x, this.position.y);
+    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.west] === WALL_TYPE.solid) return;
