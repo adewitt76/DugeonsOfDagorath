@@ -76,12 +76,12 @@ export class Console {
       history_index = this._history_buffer.length < 3 ? index + 1 : index;
       let line_y = line_location[history_index];
       print_character('_', 0, line_y, this._colors_inverted);
-      buffer.split('').forEach((c, i) => print_character(c, (i * 7) + 7, line_y, this._colors_inverted));
+      buffer.split('').forEach((c, i) => print_character(c, (i * 8) + 8, line_y, this._colors_inverted));
     });
     history_index++;
     let line_y = line_location[history_index];
     print_character('_', 0, line_y, this._colors_inverted);
-    this._input_buffer.forEach((c, i) => print_character(c, (i * 7) + 7, line_y, this._colors_inverted));
+    this._input_buffer.forEach((c, i) => print_character(c, (i * 8) + 8, line_y, this._colors_inverted));
   }
 
   /**

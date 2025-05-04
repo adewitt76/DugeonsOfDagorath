@@ -1,5 +1,6 @@
 // @ts-check
-import { Item } from './item.js';
+import { Item } from '../items/item.js';
+import { Creature } from '../np_characters/creature.js';
 
 export class DIRECTION {
   static get north() { return 0 }
@@ -21,7 +22,7 @@ export class ROOM_CENTER {
 
 export class Cell {
   constructor() {
-    this.is_empty = true;
+    this.is_solid = true;
     this.cells = [];
     this.walls = [];
     this.center = ROOM_CENTER.normal;
@@ -29,7 +30,7 @@ export class Cell {
   }
 
   /** @type { boolean } */
-  is_empty;
+  is_solid;
 
   /** @type { Cell[] } connecting cells N,S,E,W **/
   cells;
@@ -42,4 +43,7 @@ export class Cell {
 
   /** @type { Item[] } */
   inventory;
+
+  /** @type { Creature } */
+  creature;
 }

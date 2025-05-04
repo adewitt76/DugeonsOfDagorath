@@ -6,6 +6,8 @@ import { StatusBar } from "./services/view_status_bar";
 import { Console } from "./services/view_console";
 import { Stage } from "./services/stage";
 import { LevelList } from "./Levels/level_list";
+import { MapView } from "./services/view_map";
+import { InventoryView } from "./services/view_inventory";
 
 export class Game {
 
@@ -23,30 +25,30 @@ export class Game {
   }
 
   play() {
-    /** @type { number[] } */
-    const pine_torch_full = [1, 2, 4, 8, 0, 0, 0, 0];
-    /** @type { number[] } */
-    const lunar_torch_full = [1, 1, 1, 1, 2, 8, 0, 0];
-    /** @type { number[] } */
-    const solar_torch_full = [1, 1, 1, 1, 1, 1, 1, 1];
+    /** @type { MapView } */
+    const map_view = new MapView();
 
     setInterval(() => {
       const stage = Stage.instance;
-      const painter = new Painter();
-      let torch = pine_torch_full;
 
+      const painter = new Painter();
       painter.color = 'white';
 
       const players_cell = this._level_list.getCell(0, this._player.position.x, this._player.position.y);
 
       switch (this._player.view) {
+        case PLAYER_VIEW.inventory_view:
+          InventoryView.instance.paint();
+          StatusBar.instance.paint();
+          Console.instance.paint();
+          break;
         case PLAYER_VIEW.main_view:
           CellView.instance.paint(players_cell, 0, this._player.direction);
           StatusBar.instance.paint();
           Console.instance.paint();
           break;
         case PLAYER_VIEW.map_view:
-          this._player.items.scroll.draw_map();
+          map_view.draw_map();
           break;
       }
 

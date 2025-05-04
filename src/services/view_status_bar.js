@@ -1,6 +1,7 @@
 // @ts-check
 import { Painter } from "./painter";
 import { print_character } from "../models/font";
+import { Player } from "../models/player";
 
 export class StatusBar {
 
@@ -43,7 +44,6 @@ export class StatusBar {
    */
   paint() {
     const background_color = this._colors_inverted ? 'black' : 'white';
-    const foreground_color = this._colors_inverted ? 'white' : 'black';
     this._painter.color = background_color;
     this._painter.distance = 1;
     this._painter.lightLevel = 1;
@@ -52,21 +52,32 @@ export class StatusBar {
       this._painter.moveTo(0, i);
       this._painter.lineToRelative(255, 0);
     }
-    /* TODO: print left hand */
-    print_character('e', 0, 152, !this._colors_inverted);
-    print_character('m', 7, 152, !this._colors_inverted);
-    print_character('p', 14, 152, !this._colors_inverted);
-    print_character('t', 21, 152, !this._colors_inverted);
-    print_character('y', 28, 152, !this._colors_inverted);
+
+    this.print_left_text(Player.instance.left_hand_item_text);
 
     /* TODO: print heart */
 
-    /* TODO: print right hand */
-    print_character('e', 221, 152, !this._colors_inverted);
-    print_character('m', 228, 152, !this._colors_inverted);
-    print_character('p', 235, 152, !this._colors_inverted);
-    print_character('t', 242, 152, !this._colors_inverted);
-    print_character('y', 249, 152, !this._colors_inverted);
+    this.print_right_text(Player.instance.right_hand_item_text);
+  }
+
+  /** Prints text justified left on bar
+    * @param { string } text @private 
+    */
+  print_left_text(text) {
+    for (let i = 0; i < text.length; i++) {
+      print_character(text[i], i * 8, 152, !this._colors_inverted);
+    }
+  }
+
+  /** Prints text justified right on bar
+    * @param { string } text
+    * @private 
+    */
+  print_right_text(text) {
+    let starting_character = 32 - text.length;
+    for (let i = 0; i < text.length; i++) {
+      print_character(text[i], starting_character++ * 8, 152, !this._colors_inverted);
+    }
   }
 }
 

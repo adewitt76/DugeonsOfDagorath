@@ -1,15 +1,17 @@
 // @ts-check
-import { MapView } from "../services/view_map";
 import { LevelList } from "../Levels/level_list";
 import { DIRECTION, WALL_TYPE } from "./cell";
 import { Point } from "./point";
+import { Item } from "../items/item";
+import { PineTorch } from "../items/torch_pine";
 
 export const PLAYER_VIEW = Object.freeze({
+  inventory_view: 'inventory_view',
   main_view: 'main_view',
   map_view: 'map_view',
 })
-export class Player {
 
+export class Player {
   /** @private @type { Player } */
   static _instance;
 
@@ -25,8 +27,14 @@ export class Player {
   /** @private @type { string } */
   _view;
 
-  /** @private @type {{ scroll: MapView }} */
+  /** @private @type { Item[] } */
   _items;
+
+  /** @private @type { Item | undefined } */
+  _left_hand;
+
+  /** @private @type { Item | undefined } */
+  _right_hand;
 
   /**
    * @param { Point } position
@@ -38,7 +46,9 @@ export class Player {
     this._direction = direction;
     this._level = 1;
     this._view = PLAYER_VIEW.main_view;
-    this._items = { scroll: new MapView() };
+    this._items = [
+      new PineTorch(true)
+    ];
   }
 
   /**
@@ -63,13 +73,26 @@ export class Player {
   }
 
   /**
-   * Sets the current position of the Player
+   * Gets the current position of the Player
    * @return { Point } 
    */
   get position() {
     return this._position;
   }
 
+  /** Get the text for the item in the left hand
+   * @return { string } 
+   */
+  get left_hand_item_text() {
+    return this._left_hand ? this._left_hand.toString() : 'empty';
+  }
+
+  /** Get the text for the item in the left hand
+   * @return { string } 
+   */
+  get right_hand_item_text() {
+    return this._right_hand ? this._right_hand.toString() : 'empty';
+  }
   /**
    * Sets the current position of the Player
    * @return { number } 
@@ -93,7 +116,7 @@ export class Player {
   }
 
   /** The current players items
-    *  @type {{ scroll: MapView }} 
+    *  @type { Item[] } 
     */
   get items() {
     return this._items;
@@ -105,6 +128,68 @@ export class Player {
    */
   get direction() {
     return this._direction;
+  }
+
+  /** Use item is left hand
+    * @return { boolean } successful
+    */
+  useLeft() {
+    if (!this._left_hand) return false;
+    this._left_hand.use('left');
+    return true;
+  }
+
+  /** Use item is right hand
+    * @return { boolean } successful
+    */
+  useRight() {
+    if (!this._right_hand) return false;
+    this._right_hand.use('right');
+    return true;
+  }
+
+  /** Pull item to left hand using string name of the item
+    * @param { string } item 
+    * @return { boolean } successful
+    */
+  pullLeft(item) {
+    let index = this.items.findIndex((i) => i.toString() === item);
+    index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
+    if (index === -1) return false;
+    this._left_hand = this.items.splice(index, 1)[0];
+    return true;
+  }
+
+  /** Pull item to right hand using string name of the item
+    * @param { string } item 
+    * @return { boolean } successful
+    */
+  pullRight(item) {
+    let index = this.items.findIndex((i) => i.toString() === item);
+    index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
+    if (index === -1) return false;
+    this._right_hand = this.items.splice(index, 1)[0];
+    return true;
+  }
+
+  /** Stow the item in the left hand
+    * @return { boolean } successful
+    */
+  stowLeft() {
+    if (!this._left_hand) return false;
+    this.items.push(this._left_hand);
+    this._left_hand = undefined;
+    return true;
+  }
+
+  /** Stow the item in the Right hand
+    * @return { boolean } successful
+    */
+  stowRight() {
+    if (!this._right_hand) return false;
+    this.items.push(this._right_hand);
+    this._right_hand = undefined;
+    return true;
   }
 
   moveForward() {

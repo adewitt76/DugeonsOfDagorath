@@ -15,7 +15,7 @@ export class CellView {
   _painter;
 
   /** @private @type { number[] } */
-  _light_level = [1, 1, 1, 1, 2, 8, 0, 0, 0];
+  _light_level = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   /** @private */
   constructor() {
@@ -30,6 +30,16 @@ export class CellView {
     if (this._instance) return this._instance;
     this._instance = new CellView();
     return this._instance;
+  }
+
+  /** Set the light level of the cell the represented
+    * array should have 9 numbers. The higher the number
+    * the lower the light with the exception of zero 
+    * being no light at all
+    *  @param { number[] } lightLevel
+    */
+  set light_level(lightLevel) {
+    this._light_level = lightLevel;
   }
 
   /**

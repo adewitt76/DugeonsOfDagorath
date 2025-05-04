@@ -28,7 +28,6 @@ export class CommandManager {
    */
   process(command) {
     const parsed_command = command.trim().toLowerCase().split(' ');
-    this._player.view = PLAYER_VIEW.main_view;
     switch (parsed_command[0]) {
       case 'move':
       case 'm':
@@ -38,8 +37,25 @@ export class CommandManager {
       case 't':
         this.process_turn_command(parsed_command);
         break;
+      case 'pull':
+      case 'p':
+        this.process_pull_cammand(parsed_command);
+        break;
+      case 'stow':
+      case 's':
+        this.process_stow_command(parsed_command);
+        break;
       case 'use':
+      case 'u':
         this.process_use_command(parsed_command);
+        break;
+      case 'examine':
+      case 'e':
+        this._player.view = PLAYER_VIEW.inventory_view;
+        break;
+      case 'look':
+      case 'l':
+        this._player.view = PLAYER_VIEW.main_view;
         break;
       default:
         Console.instance.append("???");
@@ -103,10 +119,54 @@ export class CommandManager {
    * @private
    */
   process_use_command(command) {
-    switch (command[1]) {
-      case 'scroll':
-        this._player.view = PLAYER_VIEW.map_view;
+    const hand = command[1];
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.useLeft()) Console.instance.append("???");
         break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.useRight()) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  process_pull_cammand(command) {
+    if (!(command.length >= 3)) Console.instance.append("???");
+    const hand = command[1];
+    let item = command.splice(2, command.length).join(' ');
+    item = item === 't' ? 'torch' : item;
+    item = item === 'p t' ? 'pine torch' : item;
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.pullLeft(item)) Console.instance.append("???");
+        break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.pullRight(item)) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  process_stow_command(command) {
+    const hand = command[1];
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.stowLeft()) Console.instance.append("???");
+        break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.stowRight()) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
     }
   }
 }

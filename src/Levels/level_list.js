@@ -56,7 +56,7 @@ export class LevelList {
       x = Random.instance.number % MAP_SIZE;
       y = Random.instance.number % MAP_SIZE;
       const cell = this._levels[0].getCell(x, y);
-      if (!cell.is_empty &&
+      if (!cell.is_solid &&
         cell.center === ROOM_CENTER.normal &&
         cell.walls.some(w => w === WALL_TYPE.open)
         // TODO: add enemy check

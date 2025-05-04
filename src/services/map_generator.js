@@ -77,7 +77,7 @@ export class DungeonGenerator {
         }
 
         // Check if we've been here before
-        if (!maze[next.row][next.col].is_empty) {
+        if (!maze[next.row][next.col].is_solid) {
           destination_row = next.row;
           destination_column = next.col;
           random_distance--;
@@ -106,8 +106,8 @@ export class DungeonGenerator {
         }
 
         // Mark cell as visited
-        if (maze[destination_row][destination_column].is_empty) {
-          maze[destination_row][destination_column].is_empty = false;
+        if (maze[destination_row][destination_column].is_solid) {
+          maze[destination_row][destination_column].is_solid = false;
           remainingCells--;
         }
         destination_row = next.row;
@@ -121,7 +121,7 @@ export class DungeonGenerator {
       for (let c = 0; c < MAP_SIZE; c++) {
 
         let cell = maze[r][c];
-        if (cell.is_empty) {
+        if (cell.is_solid) {
           continue;
         }
 
@@ -230,7 +230,7 @@ export class DungeonGenerator {
 
     for (let r = row - 1; r <= row + 1; r++) {
       for (let c = col - 1; c <= col + 1; c++) {
-        if (!this.within_boundries(r, c) || maze[r][c].is_empty) storage[index++] = false;
+        if (!this.within_boundries(r, c) || maze[r][c].is_solid) storage[index++] = false;
         else storage[index++] = true;
       }
     }

@@ -20,7 +20,7 @@ export class MapView {
     const cell_width = 8;
     for (let r = 0; r < 32; r++) {
       for (let c = 0; c < 32; c++) {
-        if (!map || !map[r] || !map[r][c] || map[r][c].is_empty) {
+        if (!map || !map[r] || !map[r][c] || map[r][c].is_solid) {
           this.draw_solid_map_square(r * cell_height, c * cell_width, 'white');
         } else {
           this.draw_solid_map_square(r * cell_height, c * cell_width, 'black');
