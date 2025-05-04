@@ -1,4 +1,5 @@
 // @ts-check
+import { Player } from '../models/player.js';
 
 export const ITEM_CLASS = Object.freeze({
   flask: 'flask',
@@ -9,7 +10,14 @@ export const ITEM_CLASS = Object.freeze({
   torch: 'torch'
 });
 
+/** @abstract */
 export class Item {
+  /** @priveate @type { number } */
+  _weight;
+
+  /** @private @type { number } */
+  _needed_reveal_power;
+
   /** @private @type { 'flask' | 'ring' | 'scroll' | 'shield' | 'sword' | 'torch' } */
   _class_name;
 
@@ -20,14 +28,18 @@ export class Item {
   _revealed;
 
   /** Create a new Item
-    * @param { 'flask' | 'ring' | 'scroll' | 'shield' | 'sword' | 'torch' } class_name
-    * @param { string } subclass
-    * @param { boolean } revealed
-    */
-  constructor(class_name, subclass, revealed) {
+   * @param { 'flask' | 'ring' | 'scroll' | 'shield' | 'sword' | 'torch' } class_name
+   * @param { string } subclass
+   * @param { number } weight 
+   * @param { number } reveal_power 
+   * @param { boolean } revealed
+   */
+  constructor(class_name, subclass, weight, reveal_power, revealed) {
     this._class_name = class_name;
     this._subclass = subclass;
     this._revealed = revealed;
+    this._weight = weight;
+    this._needed_reveal_power = reveal_power;
   }
 
   /** use this item */
@@ -38,6 +50,15 @@ export class Item {
 
   /** @return { string } */
   get class_name() { return this._class_name; }
+
+  /** @return { number } */
+  get weight() { return this._weight; }
+
+  /** Attempts to reveal the subclass 
+   */
+  reveal() {
+    this._revealed = Player.instance.power >= this._needed_reveal_power;
+  }
 
   /** @return { string } */
   toString() {

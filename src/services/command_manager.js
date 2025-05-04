@@ -22,8 +22,7 @@ export class CommandManager {
     return this._instance;
   }
 
-  /**
-   * Process a given command
+  /** Process a given command
    * @param { string } command 
    */
   process(command) {
@@ -57,16 +56,16 @@ export class CommandManager {
       case 'l':
         this._player.view = PLAYER_VIEW.main_view;
         break;
+      case 'reveal':
+      case 'r':
+        this.process_reveal_command(parsed_command);
+        break;
       default:
         Console.instance.append("???");
     }
   }
 
-  /**
-   * Process a move command
-   * @param { string[] } command 
-   * @private
-   */
+  /** @param { string[] } command @private */
   process_move_command(command) {
     switch (command[1]) {
       case undefined:
@@ -89,11 +88,7 @@ export class CommandManager {
     }
   }
 
-  /**
-   * Process a move command
-   * @param { string[] } command 
-   * @private
-   */
+  /** @param { string[] } command @private */
   process_turn_command(command) {
     switch (command[1]) {
       case 'right':
@@ -113,11 +108,7 @@ export class CommandManager {
     }
   }
 
-  /**
-   * Process a move command
-   * @param { string[] } command 
-   * @private
-   */
+  /** @param { string[] } command @private */
   process_use_command(command) {
     const hand = command[1];
     switch (hand) {
@@ -134,6 +125,7 @@ export class CommandManager {
     }
   }
 
+  /** @param { string[] } command @private */
   process_pull_cammand(command) {
     if (!(command.length >= 3)) Console.instance.append("???");
     const hand = command[1];
@@ -154,6 +146,7 @@ export class CommandManager {
     }
   }
 
+  /** @param { string[] } command @private */
   process_stow_command(command) {
     const hand = command[1];
     switch (hand) {
@@ -164,6 +157,23 @@ export class CommandManager {
       case 'right':
       case 'r':
         if (!Player.instance.stowRight()) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  /** @param { string[] } command @private */
+  process_reveal_command(command) {
+    const hand = command[1];
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.revealLeft()) Console.instance.append("???");
+        break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.revealRight()) Console.instance.append("???");
         break;
       default:
         Console.instance.append("???");

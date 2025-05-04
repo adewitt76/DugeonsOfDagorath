@@ -1,7 +1,8 @@
 // @ts-check
 import { CellView } from "../services/view_cell";
-import { Item } from "./item";
+import { Item, ITEM_CLASS } from "./item";
 
+/** @abstract */
 export class Torch extends Item {
 
   /** @private @type { boolean } */
@@ -18,10 +19,11 @@ export class Torch extends Item {
 
   /** Create a new Torch
     * @param { string } subclass
+    * @param { number } reveal_power
     * @param { boolean } revealed
     */
-  constructor(subclass, revealed) {
-    super('torch', subclass, revealed);
+  constructor(subclass, reveal_power, revealed) {
+    super(ITEM_CLASS.torch, subclass, 10, reveal_power, revealed);
   }
 
   /** use this item */
@@ -62,6 +64,7 @@ export class Torch extends Item {
    * @private
    */
   update() {
+    // TODO: make base torch and pine torch more accurate
     if (!this._minutes_until_burnout) {
       this._lit = false;
       this._dead = true;

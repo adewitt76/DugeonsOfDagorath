@@ -16,11 +16,23 @@ export class Player {
   /** @private @type { Player } */
   static _instance;
 
-  /** @private @type { Point } */
-  _position;
+  /** The power of the player used to reveal, attack, run
+   * intial power is 160 not to exceed 32,767
+   * @private @type { number } 
+   */
+  _power;
+
+  /** The encured damage of the player if this number
+   * exceeds the power the player dies.
+   * @private @type { number }
+   */
+  _damage;
 
   /** @private @type { number } */
   _level;
+
+  /** @private @type { Point } */
+  _position;
 
   /** @private @type { DIRECTION } */
   _direction;
@@ -46,6 +58,8 @@ export class Player {
     this._position = position;
     this._direction = direction;
     this._level = 1;
+    this._power = 160;
+    this._damage = 0;
     this._view = PLAYER_VIEW.main_view;
     this._items = [
       new PineTorch(false),
@@ -95,8 +109,7 @@ export class Player {
   get right_hand_item_text() {
     return this._right_hand ? this._right_hand.toString() : 'empty';
   }
-  /**
-   * Sets the current position of the Player
+  /** Sets the current position of the Player
    * @return { number } 
    */
   get level() {
@@ -104,37 +117,43 @@ export class Player {
   }
 
   /** The current players view
-    * @return { string }
-    */
+   * @return { string }
+   */
   get view() {
     return this._view;
   }
 
   /** The current players view
-    * @param { string } view
-    */
+   * @param { string } view
+   */
   set view(view) {
     this._view = view;
   }
 
   /** The current players items
-    *  @type { Item[] } 
-    */
+   *  @type { Item[] } 
+   */
   get items() {
     return this._items;
   }
 
-  /**
-   * The direction the player is pointed
+  /** The direction the player is pointed
    * @return { DIRECTION }
    */
   get direction() {
     return this._direction;
   }
 
+  /** The current power of the player
+   * @return { number }
+   */
+  get power() {
+    return this._power;
+  }
+
   /** Use item is left hand
-    * @return { boolean } successful
-    */
+   * @return { boolean } successful
+   */
   useLeft() {
     if (!this._left_hand) return false;
     if (this._left_hand.class_name === ITEM_CLASS.torch) {
@@ -152,8 +171,8 @@ export class Player {
   }
 
   /** Use item is right hand
-    * @return { boolean } successful
-    */
+   * @return { boolean } successful
+   */
   useRight() {
     if (!this._right_hand) return false;
     if (this._right_hand.class_name === ITEM_CLASS.torch) {
@@ -171,9 +190,9 @@ export class Player {
   }
 
   /** Pull item to left hand using string name of the item
-    * @param { string } item 
-    * @return { boolean } successful
-    */
+   * @param { string } item 
+   * @return { boolean } successful
+   */
   pullLeft(item) {
     let index = this.items.findIndex((i) => i.toString() === item);
     index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
@@ -183,9 +202,9 @@ export class Player {
   }
 
   /** Pull item to right hand using string name of the item
-    * @param { string } item 
-    * @return { boolean } successful
-    */
+   * @param { string } item 
+   * @return { boolean } successful
+   */
   pullRight(item) {
     let index = this.items.findIndex((i) => i.toString() === item);
     index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
@@ -195,8 +214,8 @@ export class Player {
   }
 
   /** Stow the item in the left hand
-    * @return { boolean } successful
-    */
+   * @return { boolean } successful
+   */
   stowLeft() {
     if (!this._left_hand) return false;
     this.items.push(this._left_hand);
@@ -206,13 +225,27 @@ export class Player {
   }
 
   /** Stow the item in the Right hand
-    * @return { boolean } successful
-    */
+   * @return { boolean } successful
+   */
   stowRight() {
     if (!this._right_hand) return false;
     this.items.push(this._right_hand);
     this._right_hand.stow();
     this._right_hand = undefined;
+    return true;
+  }
+
+  /** Attempt to reveal the object in left hand */
+  revealLeft() {
+    if (!this._left_hand) return false;
+    this._left_hand?.reveal();
+    return true;
+  }
+
+  /** Attempt to reveal the object in right hand */
+  revealRight() {
+    if (!this._right_hand) return false;
+    this._right_hand?.reveal();
     return true;
   }
 
