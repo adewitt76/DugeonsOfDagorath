@@ -1,10 +1,11 @@
 // @ts-check
 
 import { print_character } from "../models/font";
-import { Item } from "../items/item";
+import { Item, ITEM_CLASS } from "../items/item";
 import { Player } from "../models/player";
 import { Painter } from "./painter";
 import { LevelList } from "../Levels/level_list";
+import { Torch } from "../items/torch";
 
 export class InventoryView {
   /** @private @type { InventoryView } */
@@ -91,18 +92,20 @@ export class InventoryView {
     let line = starting_line;
     for (let i = 0; i < item_list.length; i += 2) {
       const item = item_list[i];
+      const invertColors = item.class_name === ITEM_CLASS.torch && /** @type { Torch } */(item).isLit && !this._colors_inverted;
       let starting_character = 0;
       for (let i = 0; i < item.toString().length; i++) {
-        print_character(item.toString()[i], starting_character++ * 8, line, this._colors_inverted);
+        print_character(item.toString()[i], starting_character++ * 8, line, invertColors);
       }
       line += 8;
     }
     line = starting_line;
     for (let i = 1; i < item_list.length; i += 2) {
       const item = item_list[i];
+      const invertColors = item.class_name === ITEM_CLASS.torch && /** @type { Torch } */(item).isLit && !this._colors_inverted;
       let starting_character = 16;
       for (let i = 0; i < item.toString().length; i++) {
-        print_character(item.toString()[i], starting_character++ * 8, line, this._colors_inverted);
+        print_character(item.toString()[i], starting_character++ * 8, line, invertColors);
       }
       line += 8;
     }

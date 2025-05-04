@@ -10,11 +10,4 @@ export class PineTorch extends Torch {
   constructor(revealed) {
     super('pine', revealed);
   }
-
-  /** use this item 
-    * @param { 'left' | 'right' } hand
-    */
-  use(hand) {
-    super.use(hand);
-  }
 }

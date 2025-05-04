@@ -53,8 +53,8 @@ export function print_character(char, x, y, invert = false) {
   const painter = new Painter();
   painter.lightLevel = 1;
   let p_ch = FONT[char];
-  for (let r = 0; r < 7; r++) {
-    for (let c = 0; c < 7; c++) {
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
       painter.color = invert ? 'white' : 'black';
       painter.drawPixel(c + x, r + y);
     }

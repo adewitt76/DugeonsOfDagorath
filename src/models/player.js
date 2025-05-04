@@ -2,8 +2,9 @@
 import { LevelList } from "../Levels/level_list";
 import { DIRECTION, WALL_TYPE } from "./cell";
 import { Point } from "./point";
-import { Item } from "../items/item";
+import { Item, ITEM_CLASS } from "../items/item";
 import { PineTorch } from "../items/torch_pine";
+import { Torch } from "../items/torch";
 
 export const PLAYER_VIEW = Object.freeze({
   inventory_view: 'inventory_view',
@@ -47,6 +48,7 @@ export class Player {
     this._level = 1;
     this._view = PLAYER_VIEW.main_view;
     this._items = [
+      new PineTorch(false),
       new PineTorch(true)
     ];
   }
@@ -135,7 +137,17 @@ export class Player {
     */
   useLeft() {
     if (!this._left_hand) return false;
-    this._left_hand.use('left');
+    if (this._left_hand.class_name === ITEM_CLASS.torch) {
+      this.items.forEach(i => {
+        if (i.class_name === ITEM_CLASS.torch) {
+          /**@type { Torch }*/(i).putOut();
+        }
+      });
+    }
+    this._left_hand.use();
+    if (this._left_hand.class_name === ITEM_CLASS.torch) {
+      this.stowLeft();
+    }
     return true;
   }
 
@@ -144,7 +156,17 @@ export class Player {
     */
   useRight() {
     if (!this._right_hand) return false;
-    this._right_hand.use('right');
+    if (this._right_hand.class_name === ITEM_CLASS.torch) {
+      this.items.forEach(i => {
+        if (i.class_name === ITEM_CLASS.torch) {
+          /**@type { Torch }*/(i).putOut();
+        }
+      });
+    }
+    this._right_hand.use();
+    if (this._right_hand.class_name === ITEM_CLASS.torch) {
+      this.stowRight();
+    }
     return true;
   }
 
@@ -178,6 +200,7 @@ export class Player {
   stowLeft() {
     if (!this._left_hand) return false;
     this.items.push(this._left_hand);
+    this._left_hand.stow();
     this._left_hand = undefined;
     return true;
   }
@@ -188,6 +211,7 @@ export class Player {
   stowRight() {
     if (!this._right_hand) return false;
     this.items.push(this._right_hand);
+    this._right_hand.stow();
     this._right_hand = undefined;
     return true;
   }

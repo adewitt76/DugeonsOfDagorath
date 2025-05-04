@@ -30,15 +30,16 @@ export class Item {
     this._revealed = revealed;
   }
 
-  /** use this item 
-    * @param { 'left' | 'right' } hand
-    */
-  use(hand) {
-    throw new Error('Not Implemented');
-  }
+  /** use this item */
+  use() { }
+
+  /** Item has been stowed */
+  stow() { }
 
   /** @return { string } */
   get class_name() { return this._class_name; }
+
+  /** @return { string } */
   toString() {
     return (this._revealed ? `${this._subclass} ` : '') + this._class_name;
   }
