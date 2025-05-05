@@ -2,6 +2,44 @@
 import { Point } from '../models/point';
 import { Stage } from './stage';
 
+
+/*
+| Light Level | Cell 0 | Cell 1 | Cell 2 | Cell 3 | Cell 4 | Cell 5 | Cell 6 | Cell 7 | Cell 8 |
+|-------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0 (Darkest) | 0      | 0      | 0      | 0      | 0      | 0      | 0      | 0      | 0      |
+| 1           | 4      | 8      | 0      | 0      | 0      | 0      | 0      | 0      | 0      |
+| 2           | 3      | 4      | 8      | 0      | 0      | 0      | 0      | 0      | 0      |
+| 3           | 2      | 3      | 4      | 8      | 0      | 0      | 0      | 0      | 0      |
+| 4           | 2      | 3      | 4      | 8      | 0      | 0      | 0      | 0      | 0      |
+| 5           | 1      | 2      | 3      | 4      | 8      | 0      | 0      | 0      | 0      |
+| 6           | 1      | 2      | 3      | 4      | 8      | 0      | 0      | 0      | 0      |
+| 7           | 1      | 1      | 2      | 3      | 4      | 8      | 0      | 0      | 0      |
+| 8           | 1      | 1      | 2      | 3      | 4      | 5      | 8      | 0      | 0      |
+| 9           | 1      | 1      | 1      | 2      | 3      | 4      | 5      | 8      | 0      |
+| 10          | 1      | 1      | 1      | 1      | 2      | 3      | 4      | 5      | 6      |
+| 11          | 1      | 1      | 1      | 1      | 2      | 2      | 3      | 4      | 5      |
+| 12          | 1      | 1      | 1      | 1      | 1      | 2      | 2      | 3      | 4      |
+| 13 (Brightest) | 1   | 1      | 1      | 1      | 1      | 1      | 1      | 2      | 2      |
+Each value represents the dot frequency (1=solid, higher numbers=more sparse dots, 0=invisible).
+ */
+
+const LIGHT_LEVEL_TABLE = Object.freeze({
+  0: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  1: [4, 8, 0, 0, 0, 0, 0, 0, 0],
+  2: [3, 4, 8, 0, 0, 0, 0, 0, 0],
+  3: [2, 3, 4, 8, 0, 0, 0, 0, 0],
+  4: [2, 3, 4, 8, 0, 0, 0, 0, 0],
+  5: [1, 2, 3, 4, 8, 0, 0, 0, 0],
+  6: [1, 2, 3, 4, 8, 0, 0, 0, 0],
+  7: [1, 1, 2, 3, 4, 8, 0, 0, 0],
+  8: [1, 1, 2, 3, 4, 5, 8, 0, 0],
+  9: [1, 1, 1, 2, 3, 4, 5, 8, 0],
+  10: [1, 1, 1, 1, 2, 3, 4, 5, 6],
+  11: [1, 1, 1, 1, 2, 2, 3, 4, 5],
+  12: [1, 1, 1, 1, 1, 2, 2, 3, 4],
+  13: [1, 1, 1, 1, 1, 1, 1, 2, 2],
+});
+
 const SCALING_TABLE = {
   0: [408, -76, -45],
   1: [256, 0, 0],
@@ -63,7 +101,7 @@ export class Painter {
   lineToRelative(x, y) {
     const old_current = this._current;
     const new_current = new Point(this._current.x + x, this._current.y + y);
-    this.drawLine(old_current.x, old_current.y, new_current.x, new_current.y, this._lightLevel);
+    this.drawLine(old_current.x, old_current.y, new_current.x, new_current.y);
     this._current = new_current;
   }
 
@@ -74,7 +112,7 @@ export class Painter {
    * @param { number } y coordinate
    */
   lineTo(x, y) {
-    this.drawLine(this._current.x, this._current.y, x, y, this._lightLevel);
+    this.drawLine(this._current.x, this._current.y, x, y);
     this._current = new Point(x, y);
   }
 
@@ -98,7 +136,8 @@ export class Painter {
   /** 
    * @private 
    */
-  drawLine(x1, y1, x2, y2, dot_frequency) {
+  drawLine(x1, y1, x2, y2) {
+    const dot_frequency = LIGHT_LEVEL_TABLE[this._lightLevel][this._distance];
     if (dot_frequency === 0) return;
     x1 = this.scaleX(x1);
     y1 = this.scaleY(y1);

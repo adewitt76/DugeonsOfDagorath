@@ -59,10 +59,9 @@ export class Console {
    */
   paint() {
     const background_color = this._colors_inverted ? 'white' : 'black';
-    const foreground_color = this._colors_inverted ? 'black' : 'white';
     this._painter.color = background_color;
     this._painter.distance = 1;
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = 13;
     // clear text area 158 to 192 on y
     for (let i = 160; i <= 192; i++) {
       this._painter.moveTo(0, i);

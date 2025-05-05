@@ -132,6 +132,8 @@ export class CommandManager {
     let item = command.splice(2, command.length).join(' ');
     item = item === 't' ? 'torch' : item;
     item = item === 'p t' ? 'pine torch' : item;
+    item = item === 'sc' ? 'scroll' : item;
+    item = item === 'vi sc' ? 'vision scroll' : item;
     switch (hand) {
       case 'left':
       case 'l':

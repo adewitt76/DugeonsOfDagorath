@@ -43,11 +43,14 @@ export class Game {
           Console.instance.paint();
           break;
         case PLAYER_VIEW.main_view:
-          CellView.instance.paint(players_cell, 0, this._player.direction);
+          CellView.instance.paint(players_cell, 0, this._player.light_level, this._player.direction);
           StatusBar.instance.paint();
           Console.instance.paint();
           break;
-        case PLAYER_VIEW.map_view:
+        case PLAYER_VIEW.map_view_vision_scroll:
+          map_view.draw_map();
+          break;
+        case PLAYER_VIEW.map_view_seer_scroll:
           map_view.draw_map();
           break;
       }

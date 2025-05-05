@@ -24,7 +24,7 @@ export class Item {
   /** @private @type { string } */
   _subclass;
 
-  /** @private @type { boolean } */
+  /** @protected @type { boolean } */
   _revealed;
 
   /** Create a new Item

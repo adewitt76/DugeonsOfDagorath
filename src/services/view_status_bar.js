@@ -46,7 +46,7 @@ export class StatusBar {
     const background_color = this._colors_inverted ? 'black' : 'white';
     this._painter.color = background_color;
     this._painter.distance = 1;
-    this._painter.lightLevel = 1;
+    this._painter.lightLevel = 13;
     // first paint the bar
     for (let i = 151; i <= 159; i++) {
       this._painter.moveTo(0, i);

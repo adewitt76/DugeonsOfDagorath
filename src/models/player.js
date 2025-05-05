@@ -4,12 +4,16 @@ import { DIRECTION, WALL_TYPE } from "./cell";
 import { Point } from "./point";
 import { Item, ITEM_CLASS } from "../items/item";
 import { PineTorch } from "../items/torch_pine";
+import { LunarTorch } from "../items/torch_lunar";
+import { SolarTorch } from "../items/torch_solar";
 import { Torch } from "../items/torch";
+import { VisionScroll } from "../items/scroll_vision";
 
 export const PLAYER_VIEW = Object.freeze({
   inventory_view: 'inventory_view',
   main_view: 'main_view',
-  map_view: 'map_view',
+  map_view_vision_scroll: 'map_view_vision_scroll',
+  map_view_seer_scroll: 'map_view_seer_scroll'
 })
 
 export class Player {
@@ -49,6 +53,9 @@ export class Player {
   /** @private @type { Item | undefined } */
   _right_hand;
 
+  /** @private @type { Torch | undefined } */
+  _lit_torch;
+
   /**
    * @param { Point } position
    * @param { DIRECTION } direction
@@ -62,8 +69,10 @@ export class Player {
     this._damage = 0;
     this._view = PLAYER_VIEW.main_view;
     this._items = [
-      new PineTorch(false),
-      new PineTorch(true)
+      new PineTorch(true),
+      new VisionScroll(true),
+      new SolarTorch(true),
+      new LunarTorch(true)
     ];
   }
 
@@ -109,11 +118,19 @@ export class Player {
   get right_hand_item_text() {
     return this._right_hand ? this._right_hand.toString() : 'empty';
   }
-  /** Sets the current position of the Player
+
+  /** Sets the current level of the Player
    * @return { number } 
    */
   get level() {
     return this._level;
+  }
+
+  /** The lit torches light level
+   * @return { number }
+   */
+  get light_level() {
+    return this._lit_torch?.light_level ?? 0;
   }
 
   /** The current players view
@@ -160,11 +177,13 @@ export class Player {
       this.items.forEach(i => {
         if (i.class_name === ITEM_CLASS.torch) {
           /**@type { Torch }*/(i).putOut();
+          this._lit_torch = undefined;
         }
       });
     }
     this._left_hand.use();
     if (this._left_hand.class_name === ITEM_CLASS.torch) {
+      this._lit_torch = /**@type{Torch}*/(this._left_hand);
       this.stowLeft();
     }
     return true;
