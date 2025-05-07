@@ -1,55 +1,61 @@
 // @ts-check
-import { CellView } from "../services/view_cell";
+import { SoundGenerator } from "../services/sound_manager";
 import { Item, ITEM_CLASS } from "./item";
+
 
 /** @abstract */
 export class Torch extends Item {
+
+  /** @private @type { HTMLAudioElement } */
 
   /** @private @type { boolean } */
   _lit = false;
 
   /** @private @type { number } */
-  _minutes_until_burnout = 15;
+  _time_remaining = 15;
 
   /** @private @type { boolean } */
   _dead = false;
 
-  /** @private @type { NodeJS.Timeout | undefined }*/
-  _interval;
+  /** @private @type { number }*/
+  _animation_frame;
 
   /** @private @type { number } */
   _light_level;
+
+  /** @private @type { number } */
+  _start_time;
 
   /** Create a new Torch
     * @param { string } subclass
     * @param { number } reveal_power
     * @param { number } light_level 
-    * @param { number } minutes_until_burnout 
+    * @param { number } time_remaining 
     * @param { boolean } revealed
     */
-  constructor(subclass, reveal_power, revealed, light_level, minutes_until_burnout) {
+  constructor(subclass, reveal_power, revealed, light_level, time_remaining) {
     super(ITEM_CLASS.torch, subclass, 10, reveal_power, revealed);
     this._light_level = light_level;
-    this._minutes_until_burnout;
+    this._time_remaining = time_remaining;
+
   }
 
   /** use this item */
-  use() {
+  async use() {
     if (!this._dead) {
-      this._lit = true;
-      this._interval = setInterval(() => {
-        this._minutes_until_burnout--;
-        this.update();
-      }, 60000);
+      SoundGenerator.instance.torch(1);
+      this._lit = true
+      this._animation_frame = requestAnimationFrame(this.light);
     }
   }
 
   /** Item has been stowed */
   putOut() {
-    if (this._interval) {
+    if (this._animation_frame) {
       this._lit = false;
-      clearInterval(this._interval);
-      this._interval = undefined;
+      cancelAnimationFrame(this._animation_frame);
+      this._start_time = 0;
+      this._animation_frame = 0;
     }
   }
 
@@ -66,6 +72,11 @@ export class Torch extends Item {
     return this._light_level;
   }
 
+  /** return { number } */
+  get time_remaining() {
+    return this._time_remaining - 1;
+  }
+
   /** @return { string } */
   toString() {
     if (this._dead) {
@@ -78,15 +89,31 @@ export class Torch extends Item {
    * @private
    */
   update() {
-    this._light_level = this._minutes_until_burnout > this._light_level ?
-      this._light_level : this._minutes_until_burnout;
+    this._light_level = this._time_remaining > this._light_level ?
+      this._light_level : this._time_remaining;
 
-    if (!this._minutes_until_burnout) {
+    if (this._time_remaining <= 0) {
       this._lit = false;
       this._dead = true;
-      clearInterval(this._interval);
-      this._interval = undefined;
-      return;
+      this._start_time = 0;
+      this._time_remaining = 0;
+    }
+  }
+
+  /** This function runs while the torch is lit
+   * @param { number } time_stamp
+   * @private
+   */
+  light = (time_stamp) => {
+    if (!this._start_time) this._start_time = time_stamp;
+    const elapsed_time = (time_stamp - this._start_time) / 1000;
+    if (elapsed_time >= 60) {
+      this._start_time = time_stamp;
+      this._time_remaining--;
+      this.update();
+    }
+    if (this._lit) {
+      this._animation_frame = requestAnimationFrame(this.light);
     }
   }
 }

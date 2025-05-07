@@ -1,6 +1,7 @@
 // @ts-check
 import { Player, PLAYER_VIEW } from "../models/player";
 import { Console } from "./view_console";
+import { DebugOverlay } from "./view_debug";
 
 export class CommandManager {
 
@@ -59,6 +60,9 @@ export class CommandManager {
       case 'reveal':
       case 'r':
         this.process_reveal_command(parsed_command);
+        break;
+      case 'dbg':
+        this.process_debug_command(parsed_command);
         break;
       default:
         Console.instance.append("???");
@@ -132,6 +136,8 @@ export class CommandManager {
     let item = command.splice(2, command.length).join(' ');
     item = item === 't' ? 'torch' : item;
     item = item === 'p t' ? 'pine torch' : item;
+    item = item === 'l t' ? 'lunar torch' : item;
+    item = item === 's t' ? 'solar torch' : item;
     item = item === 'sc' ? 'scroll' : item;
     item = item === 'vi sc' ? 'vision scroll' : item;
     switch (hand) {
@@ -179,6 +185,21 @@ export class CommandManager {
         break;
       default:
         Console.instance.append("???");
+    }
+  }
+
+  /** @param { string[] } command @private */
+  process_debug_command(command) {
+    switch (command[1]) {
+      case 'on':
+        DebugOverlay.instance.show();
+        break;
+      case 'off':
+        DebugOverlay.instance.hide();
+        break;
+      default:
+        Console.instance.append("???");
+        break;
     }
   }
 }

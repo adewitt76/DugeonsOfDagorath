@@ -133,6 +133,13 @@ export class Player {
     return this._lit_torch?.light_level ?? 0;
   }
 
+  /** The lit torches light level
+   * @return { Torch | undefined }
+   */
+  get lit_torch() {
+    return this._lit_torch;
+  }
+
   /** The current players view
    * @return { string }
    */
@@ -174,12 +181,8 @@ export class Player {
   useLeft() {
     if (!this._left_hand) return false;
     if (this._left_hand.class_name === ITEM_CLASS.torch) {
-      this.items.forEach(i => {
-        if (i.class_name === ITEM_CLASS.torch) {
-          /**@type { Torch }*/(i).putOut();
-          this._lit_torch = undefined;
-        }
-      });
+      this._lit_torch?.putOut();
+      this._lit_torch = undefined;
     }
     this._left_hand.use();
     if (this._left_hand.class_name === ITEM_CLASS.torch) {
@@ -195,14 +198,12 @@ export class Player {
   useRight() {
     if (!this._right_hand) return false;
     if (this._right_hand.class_name === ITEM_CLASS.torch) {
-      this.items.forEach(i => {
-        if (i.class_name === ITEM_CLASS.torch) {
-          /**@type { Torch }*/(i).putOut();
-        }
-      });
+      this._lit_torch?.putOut();
+      this._lit_torch = undefined;
     }
     this._right_hand.use();
     if (this._right_hand.class_name === ITEM_CLASS.torch) {
+      this._lit_torch = /**@type{Torch}*/(this._right_hand);
       this.stowRight();
     }
     return true;
@@ -213,6 +214,7 @@ export class Player {
    * @return { boolean } successful
    */
   pullLeft(item) {
+    if (this._left_hand) return false;
     let index = this.items.findIndex((i) => i.toString() === item);
     index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
@@ -225,6 +227,7 @@ export class Player {
    * @return { boolean } successful
    */
   pullRight(item) {
+    if (this._right_hand) return false;
     let index = this.items.findIndex((i) => i.toString() === item);
     index = index === -1 ? this.items.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
@@ -288,7 +291,6 @@ export class Player {
         this._position = new Point(this.position.x - 1, this.position.y);
         break;
     }
-    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveBackward() {
@@ -311,7 +313,6 @@ export class Player {
         this._position = new Point(this.position.x + 1, this.position.y);
         break;
     }
-    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveRight() {
@@ -334,7 +335,6 @@ export class Player {
         this._position = new Point(this.position.x, this.position.y - 1);
         break;
     }
-    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   moveLeft() {
@@ -357,7 +357,6 @@ export class Player {
         this._position = new Point(this.position.x, this.position.y + 1);
         break;
     }
-    console.log('position [', this.position.y, '][', this.position.x, ']');
   }
 
   turnLeft() {
