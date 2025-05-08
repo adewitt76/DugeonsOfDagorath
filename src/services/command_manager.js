@@ -41,6 +41,10 @@ export class CommandManager {
       case 'p':
         this.process_pull_cammand(parsed_command);
         break;
+      case 'get':
+      case 'g':
+        this.process_get_cammand(parsed_command);
+        break;
       case 'stow':
       case 's':
         this.process_stow_command(parsed_command);
@@ -60,6 +64,10 @@ export class CommandManager {
       case 'reveal':
       case 'r':
         this.process_reveal_command(parsed_command);
+        break;
+      case 'drop':
+      case 'd':
+        this.process_drop_command(parsed_command);
         break;
       case 'dbg':
         this.process_debug_command(parsed_command);
@@ -133,13 +141,7 @@ export class CommandManager {
   process_pull_cammand(command) {
     if (!(command.length >= 3)) Console.instance.append("???");
     const hand = command[1];
-    let item = command.splice(2, command.length).join(' ');
-    item = item === 't' ? 'torch' : item;
-    item = item === 'p t' ? 'pine torch' : item;
-    item = item === 'l t' ? 'lunar torch' : item;
-    item = item === 's t' ? 'solar torch' : item;
-    item = item === 'sc' ? 'scroll' : item;
-    item = item === 'vi sc' ? 'vision scroll' : item;
+    let item = this.process_item_acronym(command);
     switch (hand) {
       case 'left':
       case 'l':
@@ -152,6 +154,37 @@ export class CommandManager {
       default:
         Console.instance.append("???");
     }
+  }
+
+  /** @param { string[] } command @private */
+  process_get_cammand(command) {
+    if (!(command.length >= 3)) Console.instance.append("???");
+    const hand = command[1];
+    let item = this.process_item_acronym(command);
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.getLeft(item)) Console.instance.append("???");
+        break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.getRight(item)) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  /** @param { string[] } command @private */
+  process_item_acronym(command) {
+    let item = command.splice(2, command.length).join(' ');
+    item = item === 't' ? 'torch' : item;
+    item = item === 'p t' ? 'pine torch' : item;
+    item = item === 'l t' ? 'lunar torch' : item;
+    item = item === 's t' ? 'solar torch' : item;
+    item = item === 'sc' ? 'scroll' : item;
+    item = item === 'vi sc' ? 'vision scroll' : item;
+    return item;
   }
 
   /** @param { string[] } command @private */
@@ -182,6 +215,23 @@ export class CommandManager {
       case 'right':
       case 'r':
         if (!Player.instance.revealRight()) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  /** @param { string[] } command @private */
+  process_drop_command(command) {
+    const hand = command[1];
+    switch (hand) {
+      case 'left':
+      case 'l':
+        if (!Player.instance.dropLeft()) Console.instance.append("???");
+        break;
+      case 'right':
+      case 'r':
+        if (!Player.instance.dropRight()) Console.instance.append("???");
         break;
       default:
         Console.instance.append("???");

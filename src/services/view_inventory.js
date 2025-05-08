@@ -48,7 +48,7 @@ export class InventoryView {
   paint() {
     let line = 0;
     const player = Player.instance;
-    const players_cell = LevelList.instance.getCell(0, player.position.x, player.position.y);
+    const players_cell = LevelList.instance.getCell(player.level - 1, player.position.x, player.position.y);
     let creature = !!players_cell.creature;
     const background_color = this._colors_inverted ? 'white' : 'black';
     this._painter.color = background_color;

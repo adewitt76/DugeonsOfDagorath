@@ -15,6 +15,7 @@ export class VisionScroll extends Scroll {
   use() {
     if (this._revealed) {
       Player.instance.view = PLAYER_VIEW.map_view_vision_scroll;
+      super.use();
     }
   }
 }

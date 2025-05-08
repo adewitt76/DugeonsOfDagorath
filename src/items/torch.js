@@ -1,4 +1,5 @@
 // @ts-check
+import { Painter } from "../services/painter";
 import { SoundGenerator } from "../services/sound_manager";
 import { Item, ITEM_CLASS } from "./item";
 
@@ -75,6 +76,16 @@ export class Torch extends Item {
   /** return { number } */
   get time_remaining() {
     return this._time_remaining - 1;
+  }
+
+  /**
+   * @param { Painter } painter
+   */
+  paint(painter) {
+    painter.moveTo(60, 118);
+    painter.lineToRelative(14, -2);
+    painter.lineToRelative(-2, -2);
+    painter.lineToRelative(-12, 4);
   }
 
   /** @return { string } */

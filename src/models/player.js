@@ -235,6 +235,34 @@ export class Player {
     return true;
   }
 
+  /** Pull item to left hand using string name of the item
+   * @param { string } item 
+   * @return { boolean } successful
+   */
+  getLeft(item) {
+    if (this._left_hand) return false;
+    let cell_inventory = LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory;
+    let index = cell_inventory.findIndex((i) => i.toString() === item);
+    index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
+    if (index === -1) return false;
+    this._left_hand = cell_inventory.splice(index, 1)[0];
+    return true;
+  }
+
+  /** Pull item to right hand using string name of the item
+   * @param { string } item 
+   * @return { boolean } successful
+   */
+  getRight(item) {
+    if (this._right_hand) return false;
+    let cell_inventory = LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory;
+    let index = cell_inventory.findIndex((i) => i.toString() === item);
+    index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
+    if (index === -1) return false;
+    this._right_hand = cell_inventory.splice(index, 1)[0];
+    return true;
+  }
+
   /** Stow the item in the left hand
    * @return { boolean } successful
    */
@@ -268,6 +296,20 @@ export class Player {
   revealRight() {
     if (!this._right_hand) return false;
     this._right_hand?.reveal();
+    return true;
+  }
+
+  dropLeft() {
+    if (!this._left_hand) return false;
+    LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory.push(this._left_hand);
+    this._left_hand = undefined;
+    return true;
+  }
+
+  dropRight() {
+    if (!this._right_hand) return false;
+    LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory.push(this._right_hand);
+    this._right_hand = undefined;
     return true;
   }
 

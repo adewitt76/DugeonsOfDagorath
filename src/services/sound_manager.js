@@ -1,7 +1,8 @@
 // @ts-check
 
 const SOUND_SOURCE_ID = Object.freeze({
-  torch: 'torch_sound',
+  scroll: 'scroll',
+  torch: 'torch',
   explosion_1: 'explosion_1'
 });
 
@@ -17,6 +18,9 @@ export class SoundGenerator {
   _audio_gain;
 
   /** @private @type { HTMLAudioElement } */
+  _scroll;
+
+  /** @private @type { HTMLAudioElement } */
   _torch;
 
   /** @private @type { HTMLAudioElement } */
@@ -27,6 +31,7 @@ export class SoundGenerator {
     // Initialize Audio Context
     this._audio_context = new AudioContext();
     this._audio_gain = this._audio_context.createGain();
+    this._scroll = /** @type { HTMLMediaElement } */ (document.getElementById(SOUND_SOURCE_ID.scroll));
     this._torch = /** @type { HTMLMediaElement } */ (document.getElementById(SOUND_SOURCE_ID.torch));
     this._explosion_1 = /** @type { HTMLMediaElement } */ (document.getElementById(SOUND_SOURCE_ID.explosion_1));
   }
@@ -40,7 +45,15 @@ export class SoundGenerator {
     return this._instance;
   }
 
-  /** Play explosion 1 sound
+  /** Play scroll sound
+   * @param { number } volume volume represented from 0 to 1.0
+   */
+  scroll(volume) {
+    this.play(this._scroll, volume);
+    this._scroll = /** @type { HTMLMediaElement } */ (document.getElementById(SOUND_SOURCE_ID.scroll));
+  }
+
+  /** Play torch sound
    * @param { number } volume volume represented from 0 to 1.0
    */
   torch(volume) {
@@ -64,7 +77,7 @@ export class SoundGenerator {
   play(source, volume) {
     const track = this._audio_context.createMediaElementSource(source);
     track.connect(this._audio_gain).connect(this._audio_context.destination);
-    this._audio_gain.gain.value = volume * 2;
+    this._audio_gain.gain.value = volume;
     source.play();
   }
 }
@@ -99,3 +112,4 @@ export class SoundGenerator {
 //     "THUD": () => this.thud(),             // hit wall
 //     "EXP0": () => this.bang(),             // explosion 0
 //     "EXP1": () => this.kaboom()            // explosion 1
+//

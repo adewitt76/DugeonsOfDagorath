@@ -17,6 +17,7 @@ export class CellView {
   /** @private */
   constructor() {
     this._painter = new Painter();
+    this._painter.color = 'white';
   }
 
   /**
@@ -126,8 +127,13 @@ export class CellView {
       default:
         this.ceiling(distance, light_level);
     }
+
     // 5. paint inventory
-    // 5. paint creature;
+    this._painter.distance = distance;
+    this._painter.lightLevel = light_level;
+    cell.inventory.forEach(item => item.paint(this._painter));
+
+    // 6. paint creature;
   }
 
   /**
@@ -138,7 +144,6 @@ export class CellView {
    */
   ceiling(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(47, 28);
     this._painter.lineTo(210, 28);
@@ -152,7 +157,6 @@ export class CellView {
    */
   drawSolidWall(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(64, 38);
     this._painter.lineTo(192, 38);
@@ -168,7 +172,6 @@ export class CellView {
    */
   drawSolidWallLeft(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(27, 16);
     this._painter.lineTo(64, 38);
@@ -184,7 +187,6 @@ export class CellView {
    */
   drawSolidWallRight(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(229, 16);
     this._painter.lineTo(192, 38);
@@ -200,7 +202,6 @@ export class CellView {
    */
   drawOpenWallLeft(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(26, 38);
     this._painter.lineTo(64, 38);
@@ -218,7 +219,6 @@ export class CellView {
    */
   drawOpenWallRight(distance, light_level) {
     this._painter.distance = distance;
-    this._painter.color = 'white';
     this._painter.lightLevel = light_level;
     this._painter.moveTo(229, 38);
     this._painter.lineTo(192, 38);

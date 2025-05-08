@@ -1,5 +1,6 @@
 // @ts-check
 import { Player } from '../models/player.js';
+import { Painter } from '../services/painter.js';
 
 export const ITEM_CLASS = Object.freeze({
   flask: 'flask',
@@ -58,6 +59,13 @@ export class Item {
    */
   reveal() {
     this._revealed = Player.instance.power >= this._needed_reveal_power;
+  }
+
+  /**
+   * @param { Painter } painter 
+   */
+  paint(painter) {
+    console.error(`${this._class_name} paint is not Implemented`);
   }
 
   /** @return { string } */
