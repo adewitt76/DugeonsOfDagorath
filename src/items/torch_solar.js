@@ -9,6 +9,6 @@ export class SolarTorch extends Torch {
    * @param { boolean } revealed
    */
   constructor(revealed) {
-    super('solar', 1750, revealed, 13, 60);
+    super('solar', 1750, revealed, 13, 11, 60);
   }
 }

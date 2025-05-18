@@ -30,24 +30,15 @@ export class CellView {
     return this._instance;
   }
 
-  /** Set the light level of the cell the represented
-    * array should have 9 numbers. The higher the number
-    * the lower the light with the exception of zero 
-    * being no light at all
-    *  @param { number[] } lightLevel
-    */
-  set light_level(lightLevel) {
-    this._light_level = lightLevel;
-  }
-
   /**
    * Paint the given cell
    * @param { Cell } cell 
    * @param { number } distance the distance in cells from view
    * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @param { number | undefined } magic_light_level a number between 0 to 11 0 being no light 13 being max light
    * @param { DIRECTION } direction the view direction
    */
-  paint(cell, distance, light_level, direction) {
+  paint(cell, distance, light_level, magic_light_level, direction) {
     let /** @type { WALL_TYPE } */ left;
     let /** @type { WALL_TYPE } */ right;
     let /** @type { WALL_TYPE } */ forward;
@@ -80,7 +71,7 @@ export class CellView {
     switch (forward) {
       case WALL_TYPE.open:
         if (distance > 7) return;
-        this.paint(cell.cells[/** @type {number} */(direction)], distance + 1, light_level, direction);
+        this.paint(cell.cells[/** @type {number} */(direction)], distance + 1, light_level, magic_light_level, direction);
         break;
       case WALL_TYPE.solid:
         this.drawSolidWall(distance, light_level);
@@ -89,6 +80,7 @@ export class CellView {
         this.drawDoorForward(distance, light_level)
         break;
       case WALL_TYPE.magic_door:
+        this.drawMajicDoorForward(distance, light_level, magic_light_level);
         break;
     }
 
@@ -104,6 +96,7 @@ export class CellView {
         this.drawDoorRight(distance, light_level);
         break;
       case WALL_TYPE.magic_door:
+        this.drawMajicDoorRight(distance, light_level, magic_light_level);
         break;
     }
 
@@ -119,6 +112,7 @@ export class CellView {
         this.drawDoorLeft(distance, light_level);
         break;
       case WALL_TYPE.magic_door:
+        this.drawMagicDoorLeft(distance, light_level, magic_light_level);
         break;
     }
 
@@ -274,5 +268,56 @@ export class CellView {
     this._painter.lineTo(56, 119);
     this._painter.moveTo(48, 92);
     this._painter.lineTo(52, 93);
+  }
+
+  /**
+   * Draw a door wall in front
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @param { number | undefined } magic_light_level a number between 0 to 11 0 being no light 13 being max light
+   * @private
+   */
+  drawMajicDoorForward(distance, light_level, magic_light_level) {
+    this.drawSolidWall(distance, light_level);
+    this.magic_light_level = magic_light_level || 0;
+    this._painter.isMagic = true;
+    this._painter.moveTo(108, 113);
+    this._painter.lineTo(128, 67);
+    this._painter.lineTo(148, 114);
+    this._painter.isMagic = false;
+  }
+
+  /**
+   * Draw a door wall on the right
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @param { number | undefined } magic_light_level a number between 0 to 11 0 being no light 13 being max light
+   * @private
+   */
+  drawMajicDoorRight(distance, light_level, magic_light_level) {
+    this.drawSolidWallRight(distance, light_level);
+    this.magic_light_level = magic_light_level || 0;
+    this._painter.isMagic = true;
+    this._painter.moveTo(216, 128);
+    this._painter.lineTo(206, 66);
+    this._painter.lineTo(198, 117);
+    this._painter.isMagic = false;
+  }
+
+  /**
+   * Draw a door wall on the left
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @param { number | undefined } magic_light_level a number between 0 to 11 0 being no light 13 being max light
+   * @private
+   */
+  drawMagicDoorLeft(distance, light_level, magic_light_level) {
+    this.drawSolidWallLeft(distance, light_level);
+    this.magic_light_level = magic_light_level || 0;
+    this._painter.isMagic = true;
+    this._painter.moveTo(40, 128);
+    this._painter.lineTo(50, 66);
+    this._painter.lineTo(58, 117);
+    this._painter.isMagic = false;
   }
 }

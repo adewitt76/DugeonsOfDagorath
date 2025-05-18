@@ -9,6 +9,6 @@ export class LunarTorch extends Torch {
    * @param { boolean } revealed
    */
   constructor(revealed) {
-    super('lunar', 625, revealed, 10, 30);
+    super('lunar', 625, revealed, 10, 4, 30);
   }
 }

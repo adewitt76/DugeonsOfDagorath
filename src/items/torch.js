@@ -25,6 +25,9 @@ export class Torch extends Item {
   _light_level;
 
   /** @private @type { number } */
+  _magic_illumination;
+
+  /** @private @type { number } */
   _start_time;
 
   /** Create a new Torch
@@ -32,13 +35,14 @@ export class Torch extends Item {
     * @param { number } reveal_power
     * @param { number } light_level 
     * @param { number } time_remaining 
+    * @param { number } magic_illumination
     * @param { boolean } revealed
     */
-  constructor(subclass, reveal_power, revealed, light_level, time_remaining) {
+  constructor(subclass, reveal_power, revealed, light_level, magic_illumination, time_remaining) {
     super(ITEM_CLASS.torch, subclass, 10, reveal_power, revealed);
     this._light_level = light_level;
+    this._magic_illumination = magic_illumination;
     this._time_remaining = time_remaining;
-
   }
 
   /** use this item */
@@ -65,12 +69,17 @@ export class Torch extends Item {
     return this._lit;
   }
 
-  /** return { number } */
+  /** @return { number } */
   get light_level() {
     if (!this._revealed && this._light_level > 7) {
       return 7;
     }
     return this._light_level;
+  }
+
+  /** @return { number } */
+  get magic_illumination() {
+    return this._magic_illumination;
   }
 
   /** return { number } */
@@ -102,6 +111,9 @@ export class Torch extends Item {
   update() {
     this._light_level = this._time_remaining > this._light_level ?
       this._light_level : this._time_remaining;
+      
+    this._magic_illumination = this._time_remaining > this._magic_illumination ?
+      this._light_level : this._magic_illumination;
 
     if (this._time_remaining <= 0) {
       this._lit = false;

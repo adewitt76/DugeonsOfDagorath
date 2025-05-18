@@ -9,6 +9,6 @@ export class PineTorch extends Torch {
    * @param { boolean } revealed
    */
   constructor(revealed) {
-    super('pine', 125, revealed, 7, 15);
+    super('pine', 125, revealed, 7, 0, 15);
   }
 }

@@ -1,0 +1,5 @@
+1. This is a pure javascript project no npm libraries should be suggested.
+
+2. Every new function and need to have jsdocs
+
+3. Every file should have "// @ts-check" at the top and type errors need to be fixed

@@ -49,7 +49,8 @@ export class Game {
         Console.instance.paint();
         break;
       case PLAYER_VIEW.main_view:
-        CellView.instance.paint(players_cell, 0, this._player.light_level, this._player.direction);
+        const magic_illumination = this._player.lit_torch?.magic_illumination;
+        CellView.instance.paint(players_cell, 0, this._player.light_level, magic_illumination, this._player.direction);
         StatusBar.instance.paint();
         Console.instance.paint();
         break;

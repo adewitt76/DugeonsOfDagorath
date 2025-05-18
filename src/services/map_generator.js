@@ -156,16 +156,16 @@ export class DungeonGenerator {
       }
     }
 
-    // // Create regular doors
-    // for (let i = 0; i < 70; i++) {
-    //   this.makdor(this.dorTab);
-    // }
-    //
-    // // Create secret doors
-    // for (let i = 0; i < 45; i++) {
-    //   this.makdor(this.sdrTab);
-    // }
-    //
+    // Create regular
+    for (let i = 0; i < 70; i++) {
+      this.make_door(maze, WALL_TYPE.normal_door);
+    }
+
+    // Create regular
+    for (let i = 0; i < 45; i++) {
+      this.make_door(maze, WALL_TYPE.magic_door);
+    }
+
     // // Spin the random number generator
     // const spinCount = Date.now() % 256;
     // for (let i = 0; i < spinCount; i++) {
@@ -237,6 +237,45 @@ export class DungeonGenerator {
     return storage;
   }
 
+  /**
+  * @param { WALL_TYPE } door_type
+  */
+  make_door(maze, door_type) {
+    while (true) {
+      const cell_description = this._random_cell(maze);
+      if (cell_description.cell.is_solid) {
+        continue;
+      }
+
+      const direction = Random.instance.number % 4;
+
+      if (cell_description.cell.walls[direction] !== WALL_TYPE.open) {
+        continue;
+      }
+
+      if (direction === DIRECTION.north) {
+          cell_description.cell.walls[DIRECTION.north] = door_type;
+          cell_description.cell.cells[DIRECTION.north].walls[DIRECTION.south] = door_type;
+      }
+
+      if (direction === DIRECTION.south) {
+          cell_description.cell.walls[DIRECTION.south] = door_type;
+          cell_description.cell.cells[DIRECTION.south].walls[DIRECTION.north] = door_type;
+      }
+
+      if (direction === DIRECTION.east) {
+          cell_description.cell.walls[DIRECTION.east] = door_type;
+          cell_description.cell.cells[DIRECTION.east].walls[DIRECTION.west] = door_type;
+      }
+
+      if (direction === DIRECTION.west) {
+          cell_description.cell.walls[DIRECTION.west] = door_type;
+          cell_description.cell.cells[DIRECTION.west].walls[DIRECTION.east] = door_type;
+      }
+
+      break;
+    }
+  }
   // Function to create doors
   // makdor(doorTable) {
   //   while (true) {

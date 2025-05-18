@@ -39,6 +39,21 @@ const LIGHT_LEVEL_TABLE = Object.freeze({
   13: [1, 1, 1, 1, 2, 2, 2, 3, 3],
 });
 
+const MAGIC_LIGHT_TABLE = Object.freeze({
+  0: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  1: [8, 11, 16, 0, 0, 0, 0, 0, 0],
+  2: [6, 10, 16, 0, 0, 0, 0, 0, 0],
+  3: [5, 9, 16, 0, 0, 0, 0, 0, 0],
+  4: [4, 8, 16, 0, 0, 0, 0, 0, 0],
+  5: [3, 4, 8, 0, 0, 0, 0, 0, 0],
+  6: [2, 3, 4, 8, 0, 0, 0, 0, 0],
+  7: [1, 2, 3, 4, 8, 0, 0, 0, 0],
+  8: [2, 3, 4, 8, 0, 0, 0, 0, 0],
+  9: [2, 2, 3, 4, 8, 0, 0, 0, 0],
+  10: [2, 2, 3, 4, 8, 0, 0, 0, 0],
+  11: [1, 2, 3, 4, 8, 0, 0, 0, 0],
+});
+
 const SCALING_TABLE = {
   0: [408, -76, -45],
   1: [256, 0, 0],
@@ -61,7 +76,11 @@ export class Painter {
   /** @private @type { number } */
   _distance = 1;
   /** @private @type { number } */
-  _lightLevel = 0;
+  _light_level = 0;
+  /** @private @type { number } */
+  _magic_light_level = 0;
+  /** @private @type { boolean } */
+  _is_magic = false;
 
   constructor() {
     this._stage = Stage.instance;
@@ -79,7 +98,17 @@ export class Painter {
 
   /** @param { number } level */
   set lightLevel(level) {
-    this._lightLevel = level;
+    this._light_level = level;
+  }
+
+  /** @param { number } level */
+  set magicLightLevel(level) {
+    this._magic_light_level = level;
+  }
+
+  /** @param { boolean } value */
+  set isMagic(value) {
+    this._is_magic = value;
   }
 
   /** 
@@ -136,7 +165,7 @@ export class Painter {
    * @private 
    */
   drawLine(x1, y1, x2, y2) {
-    const dot_frequency = LIGHT_LEVEL_TABLE[this._lightLevel][this._distance];
+    const dot_frequency = this._is_magic ? MAGIC_LIGHT_TABLE[this._magic_light_level][this._distance] : LIGHT_LEVEL_TABLE[this._light_level][this._distance];
     if (dot_frequency === 0) return;
     x1 = this.scaleX(x1);
     y1 = this.scaleY(y1);
