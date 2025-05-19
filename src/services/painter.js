@@ -155,6 +155,8 @@ export class Painter {
 
   /** 
    * @private 
+   * @param { number } x coordinate
+   * @param { number } y coordinate
    */
   draw_pixel(x, y) {
     this._stage.canvas.fillStyle = this._color;
@@ -163,10 +165,18 @@ export class Painter {
 
   /** 
    * @private 
+   * @param { number } x1 start x coordinate
+   * @param { number } y1 start y coordinate
+   * @param { number } x2 end x coordinate
+   * @param { number } y2 end y coordinate
    */
   drawLine(x1, y1, x2, y2) {
-    const dot_frequency = this._is_magic ? MAGIC_LIGHT_TABLE[this._magic_light_level][this._distance] : LIGHT_LEVEL_TABLE[this._light_level][this._distance];
-    if (dot_frequency === 0) return;
+    const dot_frequency = this._is_magic ? 
+      (MAGIC_LIGHT_TABLE[this._magic_light_level] ? MAGIC_LIGHT_TABLE[this._magic_light_level][this._distance] : 0) : 
+      LIGHT_LEVEL_TABLE[this._light_level][this._distance];
+    
+    if (dot_frequency === 0 || dot_frequency === undefined) return;
+    
     x1 = this.scaleX(x1);
     y1 = this.scaleY(y1);
     x2 = this.scaleX(x2);

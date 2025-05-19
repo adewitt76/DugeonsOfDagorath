@@ -279,7 +279,7 @@ export class CellView {
    */
   drawMajicDoorForward(distance, light_level, magic_light_level) {
     this.drawSolidWall(distance, light_level);
-    this.magic_light_level = magic_light_level || 0;
+    this._painter.magicLightLevel = magic_light_level || 0;
     this._painter.isMagic = true;
     this._painter.moveTo(108, 113);
     this._painter.lineTo(128, 67);
@@ -296,7 +296,7 @@ export class CellView {
    */
   drawMajicDoorRight(distance, light_level, magic_light_level) {
     this.drawSolidWallRight(distance, light_level);
-    this.magic_light_level = magic_light_level || 0;
+    this._painter.magicLightLevel = magic_light_level || 0;
     this._painter.isMagic = true;
     this._painter.moveTo(216, 128);
     this._painter.lineTo(206, 66);
@@ -313,7 +313,7 @@ export class CellView {
    */
   drawMagicDoorLeft(distance, light_level, magic_light_level) {
     this.drawSolidWallLeft(distance, light_level);
-    this.magic_light_level = magic_light_level || 0;
+    this._painter.magicLightLevel = magic_light_level || 0;
     this._painter.isMagic = true;
     this._painter.moveTo(40, 128);
     this._painter.lineTo(50, 66);

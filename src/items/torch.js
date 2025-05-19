@@ -113,7 +113,7 @@ export class Torch extends Item {
       this._light_level : this._time_remaining;
       
     this._magic_illumination = this._time_remaining > this._magic_illumination ?
-      this._light_level : this._magic_illumination;
+      this._magic_illumination : this._time_remaining;
 
     if (this._time_remaining <= 0) {
       this._lit = false;
