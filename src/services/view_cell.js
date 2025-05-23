@@ -1,5 +1,5 @@
 // @ts-check
-import { Cell, DIRECTION, WALL_TYPE } from "../models/cell";
+import { Cell, DIRECTION, ROOM_CENTER, WALL_TYPE } from "../models/cell";
 import { Painter } from "./painter";
 
 /**
@@ -42,7 +42,6 @@ export class CellView {
     let /** @type { WALL_TYPE } */ left;
     let /** @type { WALL_TYPE } */ right;
     let /** @type { WALL_TYPE } */ forward;
-    let center;
 
     switch (direction) {
       case DIRECTION.north:
@@ -117,7 +116,23 @@ export class CellView {
     }
 
     // 4. paint center
-    switch (center) {
+    switch (cell.center) {
+      case ROOM_CENTER.ladder_up:
+        this.drawHoleCeiling(distance, light_level);
+        this.drawLadder(distance, light_level);
+        break;
+      case ROOM_CENTER.ladder_down:
+        this.ceiling(distance, light_level);
+        this.drawHoleFloor(distance, light_level);
+        this.drawLadder(distance, light_level);
+        break;
+      case ROOM_CENTER.hole_ceiling:
+        this.drawHoleCeiling(distance, light_level);
+        break;
+      case ROOM_CENTER.hole_floor:
+        this.ceiling(distance, light_level);
+        this.drawHoleFloor(distance, light_level);
+        break;
       default:
         this.ceiling(distance, light_level);
     }
@@ -319,5 +334,94 @@ export class CellView {
     this._painter.lineTo(50, 66);
     this._painter.lineTo(58, 117);
     this._painter.isMagic = false;
+  }
+
+  /**
+   * Draw a ladder in the current cell
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @private
+   */
+  drawLadder(distance, light_level) {
+    this._painter.distance = distance;
+    this._painter.lightLevel = light_level;
+
+    // Vertical rails
+    this._painter.moveTo(116, 24);
+    this._painter.lineTo(116, 128);
+    this._painter.moveTo(140, 24);
+    this._painter.lineTo(140, 128);
+
+    // Horizontal rungs
+    this._painter.moveTo(116, 28);
+    this._painter.lineTo(140, 28);
+    this._painter.moveTo(116, 40);
+    this._painter.lineTo(140, 40);
+    this._painter.moveTo(116, 52);
+    this._painter.lineTo(140, 52);
+    this._painter.moveTo(116, 64);
+    this._painter.lineTo(140, 64);
+    this._painter.moveTo(116, 76);
+    this._painter.lineTo(140, 76);
+    this._painter.moveTo(116, 88);
+    this._painter.lineTo(140, 88);
+    this._painter.moveTo(116, 100);
+    this._painter.lineTo(140, 100);
+    this._painter.moveTo(116, 112);
+    this._painter.lineTo(140, 112);
+    this._painter.moveTo(116, 123);
+    this._painter.lineTo(140, 123);
+  }
+
+  /**
+   * Draw a hole in the ceiling
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @private
+   */
+  drawHoleCeiling(distance, light_level) {
+    this._painter.distance = distance;
+    this._painter.lightLevel = light_level;
+
+    // Main hole shape
+    this._painter.moveTo(100, 34);
+    this._painter.lineTo(92, 24);
+    this._painter.lineTo(164, 24);
+    this._painter.lineTo(156, 34);
+    this._painter.lineTo(100, 34);
+    this._painter.lineTo(100, 24);
+    this._painter.moveTo(156, 34);
+    this._painter.lineTo(156, 24);
+
+    // Side lines
+    this._painter.moveTo(47, 28);
+    this._painter.lineTo(96, 28);
+    this._painter.moveTo(161, 28);
+    this._painter.lineTo(210, 28);
+  }
+
+  /**
+   * Draw a hole in the floor
+   * @param { number } distance the distance to determine light level
+   * @param { number } light_level a number between 0 to 13 0 being no light 13 being max light
+   * @private
+   */
+  drawHoleFloor(distance, light_level) {
+    this._painter.distance = distance;
+    this._painter.lightLevel = light_level;
+
+    // Main hole shape
+    this._painter.moveTo(100, 118);
+    this._painter.lineTo(92, 128);
+    this._painter.lineTo(164, 128);
+    this._painter.lineTo(156, 118);
+    this._painter.lineTo(100, 118);
+    this._painter.lineTo(100, 128);
+    this._painter.moveTo(156, 118);
+    this._painter.lineTo(156, 128);
+
+    // Side line
+    this._painter.moveTo(47, 28);
+    this._painter.lineTo(210, 28);
   }
 }

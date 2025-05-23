@@ -69,6 +69,10 @@ export class CommandManager {
       case 'd':
         this.process_drop_command(parsed_command);
         break;
+      case 'climb':
+      case 'c':
+        this.process_climb_command(parsed_command);
+        break;
       case 'dbg':
         this.process_debug_command(parsed_command);
         break;
@@ -232,6 +236,22 @@ export class CommandManager {
       case 'right':
       case 'r':
         if (!Player.instance.dropRight()) Console.instance.append("???");
+        break;
+      default:
+        Console.instance.append("???");
+    }
+  }
+
+  /** @param { string[] } command @private */
+  process_climb_command(command) {
+    switch (command[1]) {
+      case 'up':
+      case 'u':
+        if (!Player.instance.climbUp()) Console.instance.append("???");
+        break;
+      case 'down':
+      case 'd':
+        if (!Player.instance.climbDown()) Console.instance.append("???");
         break;
       default:
         Console.instance.append("???");

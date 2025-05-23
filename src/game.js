@@ -5,29 +5,57 @@ import { CellView } from "./services/view_cell";
 import { StatusBar } from "./services/view_status_bar";
 import { Console } from "./services/view_console";
 import { Stage } from "./services/stage";
-import { LevelList } from "./Levels/level_list";
 import { MapView } from "./services/view_map";
 import { InventoryView } from "./services/view_inventory";
 import { DebugOverlay } from "./services/view_debug";
+import { Level } from "./Levels/level";
+import { DungeonGenerator } from "./services/dungeon_generator";
+import { Cell } from "./models/cell";
 
 export class Game {
+
+  /** @private @type {Game} */
+  static _instance;
 
   /** @private @type { Player }*/
   _player;
 
-  /** @private @type { LevelList } */
-  _level_list;
+  /** @private @type { Level[] } */
+  _levels;
 
   /** @private @type { MapView } */
   _map_view;
 
+  /** @private */
   constructor() {
-    this._level_list = LevelList.instance;
-    const starting_position = this._level_list.player_starting_location;
-    const starting_direction = this._level_list.get_player_starting_direction(starting_position);
+    const dungeon_generator = new DungeonGenerator();
+    this._levels = dungeon_generator.generateDungeon();
+    const starting_position = dungeon_generator.generate_player_starting_location(this._levels[0]);
+    const starting_direction = dungeon_generator.generate_player_starting_direction(starting_position, this._levels[0]);
     this._player = Player.initialize(starting_position, starting_direction);
     this._show_debug = false;
     this._map_view = new MapView();
+  }
+
+  /**
+   * Get the instance of the game
+   * @returns {Game}
+   */
+  static get instance() {
+    if (this._instance) return this._instance;
+    this._instance = new Game();
+    return this._instance;
+  }
+
+  get levels() {
+    return this._levels;
+  }
+
+  /** get the current cell of the player
+    * @returns { Cell }
+    */
+  get players_cell() {
+    return this._levels[this._player.level - 1].getCell(this._player.position.x, this._player.position.y);
   }
 
   start() {
@@ -36,11 +64,8 @@ export class Game {
 
   play = () => {
     const stage = Stage.instance;
-
     const painter = new Painter();
     painter.color = 'white';
-
-    const players_cell = this._level_list.getCell(0, this._player.position.x, this._player.position.y);
 
     switch (this._player.view) {
       case PLAYER_VIEW.inventory_view:
@@ -50,7 +75,7 @@ export class Game {
         break;
       case PLAYER_VIEW.main_view:
         const magic_illumination = this._player.lit_torch?.magic_illumination || 0;
-        CellView.instance.paint(players_cell, 0, this._player.light_level, magic_illumination, this._player.direction);
+        CellView.instance.paint(this.players_cell, 0, this._player.light_level, magic_illumination, this._player.direction);
         StatusBar.instance.paint();
         Console.instance.paint();
         break;
@@ -67,4 +92,6 @@ export class Game {
     stage.swapBuffers();
     requestAnimationFrame(this.play);
   };
+
+
 }

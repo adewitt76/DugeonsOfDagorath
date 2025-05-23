@@ -1,21 +1,17 @@
 // @ts-check
 import { Painter } from "./painter";
-import { LevelList } from "../Levels/level_list";
 import { Player } from "../models/player";
+import { ROOM_CENTER } from "../models/cell";
+import { Game } from "../game";
+import { Level } from "../Levels/level";
 
 export class MapView {
-  /** @private @type { LevelList } */
-  _map;
-
-  constructor() {
-    this._map = LevelList.instance;
-  }
-
   /** Draw a 32x32 square level map on a 256px x 192px screen
   * @return { void }
   */
   draw_map() {
-    const map = this._map.getLevelMap(Player.instance.level - 1);
+    // const map = Game.instance.levels[Player.instance.level - 1];
+    const map = Game.instance.levels[Player.instance.level - 1].cells;
     const cell_height = 6;
     const cell_width = 8;
     for (let r = 0; r < 32; r++) {
@@ -24,6 +20,9 @@ export class MapView {
           this.draw_solid_map_square(r * cell_height, c * cell_width, 'white');
         } else {
           this.draw_solid_map_square(r * cell_height, c * cell_width, 'black');
+        }
+        if (map && map[r] && map[r][c] && map[r][c].center !== ROOM_CENTER.normal) {
+          this.draw_hole(r * cell_height, c * cell_width, 'white');
         }
       }
     }
@@ -68,5 +67,25 @@ export class MapView {
 
     painter.drawPixel(column + 2, row + 4);
     painter.drawPixel(column + 5, row + 4);
+  }
+
+
+  /** Draw hole or ladder location
+  * @param { number } row The vertical location
+  * @param { number } column The horizontal location
+  * @param { string } color The color the cell should be painted
+  * @return { void }
+  * @private
+  */
+  draw_hole(row, column, color) {
+    const painter = new Painter();
+    painter.color = color;
+    painter.lightLevel = 13;
+    painter.distance = 1;
+    painter.moveTo(column + 2, row + 1);
+    painter.lineToRelative(3, 0);
+    painter.lineToRelative(0, 3);
+    painter.lineToRelative(-3, 0);
+    painter.lineToRelative(0, -3);
   }
 }

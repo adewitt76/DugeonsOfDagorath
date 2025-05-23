@@ -1,11 +1,10 @@
 // @ts-check
-
 import { print_character } from "../models/font";
 import { Item, ITEM_CLASS } from "../items/item";
 import { Player } from "../models/player";
 import { Painter } from "./painter";
-import { LevelList } from "../Levels/level_list";
 import { Torch } from "../items/torch";
+import { Game } from "../game";
 
 export class InventoryView {
   /** @private @type { InventoryView } */
@@ -48,7 +47,7 @@ export class InventoryView {
   paint() {
     let line = 0;
     const player = Player.instance;
-    const players_cell = LevelList.instance.getCell(player.level - 1, player.position.x, player.position.y);
+    const players_cell = Game.instance.players_cell;
     let creature = !!players_cell.creature;
     const background_color = this._colors_inverted ? 'white' : 'black';
     this._painter.color = background_color;

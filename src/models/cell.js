@@ -18,6 +18,10 @@ export class WALL_TYPE {
 
 export class ROOM_CENTER {
   static get normal() { return 0 }
+  static get ladder_up() { return 1 }
+  static get ladder_down() { return 2 }
+  static get hole_ceiling() { return 3 }
+  static get hole_floor() { return 4 }
 };
 
 export class Cell {
@@ -27,6 +31,8 @@ export class Cell {
     this.walls = [];
     this.center = ROOM_CENTER.normal;
     this.inventory = [];
+    this.cell_above = null;
+    this.cell_below = null;
   }
 
   /** @type { boolean } */
@@ -46,4 +52,10 @@ export class Cell {
 
   /** @type { Creature } */
   creature;
+
+  /** @type { Cell | null } */
+  cell_above;
+
+  /** @type { Cell | null } */
+  cell_below;
 }

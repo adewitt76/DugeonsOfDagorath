@@ -1,6 +1,5 @@
 // @ts-check
-import { LevelList } from "../Levels/level_list";
-import { DIRECTION, WALL_TYPE } from "./cell";
+import { DIRECTION, ROOM_CENTER, WALL_TYPE } from "./cell";
 import { Point } from "./point";
 import { Item, ITEM_CLASS } from "../items/item";
 import { PineTorch } from "../items/torch_pine";
@@ -8,6 +7,7 @@ import { LunarTorch } from "../items/torch_lunar";
 import { SolarTorch } from "../items/torch_solar";
 import { Torch } from "../items/torch";
 import { VisionScroll } from "../items/scroll_vision";
+import { Game } from "../game";
 
 export const PLAYER_VIEW = Object.freeze({
   inventory_view: 'inventory_view',
@@ -241,7 +241,7 @@ export class Player {
    */
   getLeft(item) {
     if (this._left_hand) return false;
-    let cell_inventory = LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory;
+    let cell_inventory = Game.instance.players_cell.inventory;
     let index = cell_inventory.findIndex((i) => i.toString() === item);
     index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
@@ -255,7 +255,7 @@ export class Player {
    */
   getRight(item) {
     if (this._right_hand) return false;
-    let cell_inventory = LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory;
+    let cell_inventory = Game.instance.players_cell.inventory;
     let index = cell_inventory.findIndex((i) => i.toString() === item);
     index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
@@ -301,20 +301,20 @@ export class Player {
 
   dropLeft() {
     if (!this._left_hand) return false;
-    LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory.push(this._left_hand);
+    Game.instance.players_cell.inventory.push(this._left_hand);
     this._left_hand = undefined;
     return true;
   }
 
   dropRight() {
     if (!this._right_hand) return false;
-    LevelList.instance.getCell(this._level - 1, this._position.x, this._position.y).inventory.push(this._right_hand);
+    Game.instance.players_cell.inventory.push(this._right_hand);
     this._right_hand = undefined;
     return true;
   }
 
   moveForward() {
-    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
+    const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.north] === WALL_TYPE.solid) return;
@@ -336,7 +336,7 @@ export class Player {
   }
 
   moveBackward() {
-    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
+    const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.south] === WALL_TYPE.solid) return;
@@ -358,7 +358,7 @@ export class Player {
   }
 
   moveRight() {
-    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
+    const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.east] === WALL_TYPE.solid) return;
@@ -380,7 +380,7 @@ export class Player {
   }
 
   moveLeft() {
-    const current_cell = LevelList.instance.getCell(this._level - 1, this.position.x, this.position.y);
+    const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
         if (current_cell.walls[DIRECTION.west] === WALL_TYPE.solid) return;
@@ -450,6 +450,33 @@ export class Player {
         this._direction = DIRECTION.east;
         break;
     }
+  }
+
+  /**
+   * Attempt to climb up a ladder
+   * @returns {boolean} Whether the climb was successful
+   */
+  climbUp() {
+    const current_cell = Game.instance.players_cell;
+    if (current_cell.center !== ROOM_CENTER.ladder_up) return false;
+
+    this._level--;
+    return true;
+  }
+
+  /**
+   * Attempt to climb down a ladder or through a hole
+   * @returns {boolean} Whether the climb was successful
+   */
+  climbDown() {
+    const current_cell = Game.instance.players_cell;
+    if (current_cell.center !== ROOM_CENTER.ladder_down &&
+      current_cell.center !== ROOM_CENTER.hole_floor) {
+      return false;
+    }
+
+    this._level++;
+    return true;
   }
 }
 
