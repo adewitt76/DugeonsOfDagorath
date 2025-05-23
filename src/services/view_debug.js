@@ -1,7 +1,5 @@
 // @ts-check
-
 import { Player } from "../models/player";
-import { Painter } from "./painter";
 
 //
 export class DebugOverlay {

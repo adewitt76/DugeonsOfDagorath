@@ -1,5 +1,5 @@
 // @ts-check
-import { Level, MAP_SIZE } from '../Levels/level.js';
+import { Level, MAP_SIZE } from '../models/level.js';
 import { DIRECTION, ROOM_CENTER, WALL_TYPE } from '../models/cell.js';
 import { Point } from '../models/point.js';
 import { Random } from './random.js';

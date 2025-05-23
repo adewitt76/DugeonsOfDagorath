@@ -3,7 +3,6 @@ import { Painter } from "./painter";
 import { Player } from "../models/player";
 import { ROOM_CENTER } from "../models/cell";
 import { Game } from "../game";
-import { Level } from "../Levels/level";
 
 export class MapView {
   /** Draw a 32x32 square level map on a 256px x 192px screen

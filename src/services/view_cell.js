@@ -66,7 +66,7 @@ export class CellView {
         break;
     }
 
-    // 1. paint forward
+    // 1. Paint forward
     switch (forward) {
       case WALL_TYPE.open:
         if (distance > 7) return;
@@ -83,7 +83,7 @@ export class CellView {
         break;
     }
 
-    // 2. paint right
+    // 2. Paint right
     switch (right) {
       case WALL_TYPE.open:
         this.drawOpenWallRight(distance, light_level);
@@ -99,7 +99,7 @@ export class CellView {
         break;
     }
 
-    // 3. paint left
+    // 3. Paint left
     switch (left) {
       case WALL_TYPE.open:
         this.drawOpenWallLeft(distance, light_level);
@@ -115,34 +115,32 @@ export class CellView {
         break;
     }
 
-    // 4. paint center
+    // 4. Paint center
     switch (cell.center) {
+      // the following intentionally falls through
       case ROOM_CENTER.ladder_up:
-        this.drawHoleCeiling(distance, light_level);
         this.drawLadder(distance, light_level);
-        break;
-      case ROOM_CENTER.ladder_down:
-        this.ceiling(distance, light_level);
-        this.drawHoleFloor(distance, light_level);
-        this.drawLadder(distance, light_level);
-        break;
       case ROOM_CENTER.hole_ceiling:
         this.drawHoleCeiling(distance, light_level);
         break;
+      // the following intentionally falls through
+      case ROOM_CENTER.ladder_down:
+        this.drawLadder(distance, light_level);
       case ROOM_CENTER.hole_floor:
         this.ceiling(distance, light_level);
         this.drawHoleFloor(distance, light_level);
         break;
       default:
         this.ceiling(distance, light_level);
+        break;
     }
 
-    // 5. paint inventory
+    // 5. Paint inventory
     this._painter.distance = distance;
     this._painter.lightLevel = light_level;
     cell.inventory.forEach(item => item.paint(this._painter));
 
-    // 6. paint creature;
+    // 6. Paint creature;
   }
 
   /**

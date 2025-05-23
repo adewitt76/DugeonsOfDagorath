@@ -8,7 +8,7 @@ import { Stage } from "./services/stage";
 import { MapView } from "./services/view_map";
 import { InventoryView } from "./services/view_inventory";
 import { DebugOverlay } from "./services/view_debug";
-import { Level } from "./Levels/level";
+import { Level } from "./models/level";
 import { DungeonGenerator } from "./services/dungeon_generator";
 import { Cell } from "./models/cell";
 
