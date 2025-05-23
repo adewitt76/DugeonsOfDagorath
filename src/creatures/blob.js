@@ -1,6 +1,8 @@
 // @ts-check
+import { Creature } from "./creature";
+
 //
-export class Blob {
+export class Blob extends Creature {
 
   paint(painter, distance, light_level) {
     painter.color = 'green';

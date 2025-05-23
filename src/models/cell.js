@@ -1,6 +1,6 @@
 // @ts-check
 import { Item } from '../items/item.js';
-import { Creature } from '../np_characters/creature.js';
+import { Creature } from '../creatures/creature.js';
 
 export class DIRECTION {
   static get north() { return 0 }
