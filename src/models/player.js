@@ -97,11 +97,18 @@ export class Player {
     return this._instance;
   }
 
-  /** Gets the current heart rate
+  /** The delay between heart beats
+   * @returns { number }
+   */
+  get jiffy_score() {
+    return Math.trunc((this._power * 64) / (this._power + (this._damage * 2))) - 18;
+  }
+
+  /** The delay between heart beats
    * @returns { number }
    */
   get heart_rate() {
-    return ((this._power * 64) / (this._power + (this._damage * 2))) - 19;
+    return Math.trunc(3600 / this.jiffy_score);
   }
 
   /**
@@ -486,7 +493,6 @@ export class Player {
     this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     if (current_cell.center !== ROOM_CENTER.ladder_up) return false;
-
     this._level--;
     return true;
   }
@@ -502,7 +508,6 @@ export class Player {
       current_cell.center !== ROOM_CENTER.hole_floor) {
       return false;
     }
-
     this._level++;
     return true;
   }
@@ -517,5 +522,5 @@ export class Player {
     const damage = Math.trunc(this.total_weight / 8) + 3;
     this._damage += damage;
   }
-}
 
+}

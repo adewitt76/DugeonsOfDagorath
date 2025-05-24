@@ -14,7 +14,7 @@ import { Cell } from "./models/cell";
 
 export class Game {
 
-  /** @private @type {Game} */
+  /** @private @type { Game } */
   static _instance;
 
   /** @private @type { Player }*/
@@ -25,6 +25,9 @@ export class Game {
 
   /** @private @type { MapView } */
   _map_view;
+
+  /** @private @type { number } the time stamp of the last heart beat */
+  _last_heart_beat_time = 0;
 
   /** @private */
   constructor() {
@@ -47,6 +50,9 @@ export class Game {
     return this._instance;
   }
 
+  /** Get the levels for use in the components
+   * @return { Level[] } the collection of levels
+   */
   get levels() {
     return this._levels;
   }
@@ -58,14 +64,14 @@ export class Game {
     return this._levels[this._player.level - 1].getCell(this._player.position.x, this._player.position.y);
   }
 
+  /** Start the game */
   start() {
     requestAnimationFrame(this.play);
   }
 
-  last_heart_beat_time = 0;
-
   /** The main game loop. This relies on the browsers animation loop.
    * @param { number } time_stamp the time stamp given by requestAnimationFrame()
+   * @private
    */
   play = (time_stamp) => {
     this.draw_screen();
@@ -73,11 +79,13 @@ export class Game {
     requestAnimationFrame(this.play);
   };
 
+  /** Draw the screen
+    * @private
+    */
   draw_screen() {
     const stage = Stage.instance;
     const painter = new Painter();
     painter.color = 'white';
-
     switch (this._player.view) {
       case PLAYER_VIEW.inventory_view:
         InventoryView.instance.paint();
@@ -97,18 +105,21 @@ export class Game {
         this._map_view.draw_map();
         break;
     }
-
     DebugOverlay.instance.paint();
-
     stage.swapBuffers();
   }
 
+  /** Actions to perform on a heart beat
+    * @param { number } time_stamp the time stamp provided by browser animation
+    * @private
+    */
   beat_heart(time_stamp) {
-    if ((this.last_heart_beat_time + (this._player.heart_rate / 60)) < time_stamp / 1000) {
+    if ((this._last_heart_beat_time + (this._player.jiffy_score / 60)) < (time_stamp / 1000)) {
       // every heart beat show a beat and heal some of players damage
-      this.last_heart_beat_time = time_stamp / 1000;
+      this._last_heart_beat_time = time_stamp / 1000;
       StatusBar.instance.beat_heart();
       this._player.heal();
     }
   }
+
 }
