@@ -62,7 +62,18 @@ export class Game {
     requestAnimationFrame(this.play);
   }
 
-  play = () => {
+  last_heart_beat_time = 0;
+
+  /** The main game loop. This relies on the browsers animation loop.
+   * @param { number } time_stamp the time stamp given by requestAnimationFrame()
+   */
+  play = (time_stamp) => {
+    this.draw_screen();
+    this.beat_heart(time_stamp);
+    requestAnimationFrame(this.play);
+  };
+
+  draw_screen() {
     const stage = Stage.instance;
     const painter = new Painter();
     painter.color = 'white';
@@ -90,8 +101,14 @@ export class Game {
     DebugOverlay.instance.paint();
 
     stage.swapBuffers();
-    requestAnimationFrame(this.play);
-  };
+  }
 
-
+  beat_heart(time_stamp) {
+    if ((this.last_heart_beat_time + (this._player.heart_rate / 60)) < time_stamp / 1000) {
+      // every heart beat show a beat and heal some of players damage
+      this.last_heart_beat_time = time_stamp / 1000;
+      StatusBar.instance.beat_heart();
+      this._player.heal();
+    }
+  }
 }

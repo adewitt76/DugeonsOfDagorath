@@ -57,6 +57,8 @@ export class DebugOverlay {
         FPS: ${fps}<br/>
         Player stats:<br/>
         &nbsp;&nbsp;power: ${Player.instance.power}<br/>
+        &nbsp;&nbsp;damage: ${Player.instance.damage}<br/>
+        &nbsp;&nbsp;total weight: ${Player.instance.total_weight}<br/>
         Torch:<br/>
         &nbsp;&nbsp;light level: ${Player.instance.light_level}<br/>
         &nbsp;&nbsp;time left: ${Player.instance.lit_torch?.time_remaining}<br/>

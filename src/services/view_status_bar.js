@@ -1,7 +1,8 @@
 // @ts-check
 import { Painter } from "./painter";
-import { print_character } from "../models/font";
+import { FONT, print_character, print_font_char } from "../models/font";
 import { Player } from "../models/player";
+import { SoundGenerator } from "./sound_manager";
 
 export class StatusBar {
 
@@ -13,6 +14,9 @@ export class StatusBar {
 
   /** @private @type { boolean } */
   _colors_inverted;
+
+  /** @private @type { boolean } */
+  _show_large_heart;
 
   /** @private */
   constructor() {
@@ -38,6 +42,16 @@ export class StatusBar {
     this._colors_inverted = invert;
   }
 
+  beat_heart() {
+    this._show_large_heart = !this._show_large_heart;
+
+    SoundGenerator.instance.heart_1();
+    setTimeout(() => {
+      this._show_large_heart = !this._show_large_heart;
+      SoundGenerator.instance.heart_2();
+    }, 120);
+  }
+
   /**
    * Paint the status bar.
    * @return { void }
@@ -47,6 +61,7 @@ export class StatusBar {
     this._painter.color = background_color;
     this._painter.distance = 1;
     this._painter.lightLevel = 13;
+
     // first paint the bar
     for (let i = 151; i <= 159; i++) {
       this._painter.moveTo(0, i);
@@ -54,9 +69,7 @@ export class StatusBar {
     }
 
     this.print_left_text(Player.instance.left_hand_item_text);
-
-    /* TODO: print heart */
-
+    this.print_heart();
     this.print_right_text(Player.instance.right_hand_item_text);
   }
 
@@ -66,6 +79,16 @@ export class StatusBar {
   print_left_text(text) {
     for (let i = 0; i < text.length; i++) {
       print_character(text[i], i * 8, 152, !this._colors_inverted);
+    }
+  }
+
+  print_heart() {
+    if (this._show_large_heart) {
+      print_font_char(FONT.hbl1, 15 * 8, 152, !this._colors_inverted);
+      print_font_char(FONT.hbl2, (16 * 8) - 3, 152, !this._colors_inverted);
+    } else {
+      print_font_char(FONT.hbs1, 15 * 8, 152, !this._colors_inverted);
+      print_font_char(FONT.hbs2, (16 * 8) - 3, 152, !this._colors_inverted);
     }
   }
 

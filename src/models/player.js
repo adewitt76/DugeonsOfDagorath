@@ -97,6 +97,13 @@ export class Player {
     return this._instance;
   }
 
+  /** Gets the current heart rate
+   * @returns { number }
+   */
+  get heart_rate() {
+    return ((this._power * 64) / (this._power + (this._damage * 2))) - 19;
+  }
+
   /**
    * Gets the current position of the Player
    * @return { Point } 
@@ -173,6 +180,21 @@ export class Player {
    */
   get power() {
     return this._power;
+  }
+
+  /** The current power of the player
+   * @return { number }
+   */
+  get damage() {
+    return this._damage;
+  }
+
+  /** The current power of the player
+   * @return { number }
+   */
+  get total_weight() {
+    return this._items.map(i => i.weight).reduce((pv, cv) => pv + cv) +
+      (this._right_hand?._weight || 0) + (this._left_hand?._weight || 0);
   }
 
   /** Use item is left hand
@@ -314,6 +336,7 @@ export class Player {
   }
 
   moveForward() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
@@ -336,6 +359,7 @@ export class Player {
   }
 
   moveBackward() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
@@ -358,6 +382,7 @@ export class Player {
   }
 
   moveRight() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
@@ -380,6 +405,7 @@ export class Player {
   }
 
   moveLeft() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     switch (this.direction) {
       case DIRECTION.north:
@@ -457,6 +483,7 @@ export class Player {
    * @returns {boolean} Whether the climb was successful
    */
   climbUp() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     if (current_cell.center !== ROOM_CENTER.ladder_up) return false;
 
@@ -469,6 +496,7 @@ export class Player {
    * @returns {boolean} Whether the climb was successful
    */
   climbDown() {
+    this.add_movement_damage();
     const current_cell = Game.instance.players_cell;
     if (current_cell.center !== ROOM_CENTER.ladder_down &&
       current_cell.center !== ROOM_CENTER.hole_floor) {
@@ -477,6 +505,17 @@ export class Player {
 
     this._level++;
     return true;
+  }
+
+  /** Heal some damage */
+  heal() {
+    if (this._damage > 0)
+      this._damage = this.damage - Math.trunc(this.damage / 64);
+  }
+
+  add_movement_damage() {
+    const damage = Math.trunc(this.total_weight / 8) + 3;
+    this._damage += damage;
   }
 }
 
