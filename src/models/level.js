@@ -190,6 +190,19 @@ export class Level {
     );
   }
 
+  /** Find open cell
+    * @returns {{ row: number, col: number, cell: Cell }}
+    */
+  getRandomOpenCell() {
+    /** @type {{ row: number, col: number, cell: Cell }} */
+    let data;
+    do {
+      data = this._random_cell();
+    }
+    while (data.cell.is_solid);
+    return data;
+  }
+
   /** 
     * Pick a random cell in the dungeon
     * @returns {{ row: number, col: number, cell: Cell }}

@@ -74,8 +74,11 @@ export class Game {
    * @private
    */
   play = (time_stamp) => {
-    this.draw_screen();
-    this.beat_heart(time_stamp);
+    if (document.hasFocus()) {
+      this.draw_screen();
+      this.beat_heart(time_stamp);
+      this._player.updatePlayer();
+    }
     requestAnimationFrame(this.play);
   };
 

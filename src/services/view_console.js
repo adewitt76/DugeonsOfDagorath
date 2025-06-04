@@ -1,6 +1,7 @@
 // @ts-check
 
 import { print_character } from "../models/font";
+import { Player } from "../models/player";
 import { CommandManager } from "./command_manager";
 import { Painter } from "./painter";
 
@@ -99,15 +100,13 @@ export class Console {
   process_keyboard_events = (event) => {
     event.stopPropagation();
     event.preventDefault();
-
+    if (Player.instance.is_dead || Player.instance.has_fainted) return;
     if (/[A-Za-z\s]{1}/.test(event.key) && event.key.length === 1) {
       if (this._input_buffer.length < 35) {
         this._input_buffer.push(event.key);
       }
     }
-
     if (event.key === 'Backspace') this._input_buffer.pop();
-
     if (event.key === 'Enter') {
       const command = this._input_buffer.join('');
       this._history_buffer.push(command);

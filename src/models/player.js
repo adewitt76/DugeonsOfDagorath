@@ -17,6 +17,7 @@ export const PLAYER_VIEW = Object.freeze({
 })
 
 export class Player {
+
   /** @private @type { Player } */
   static _instance;
 
@@ -55,6 +56,12 @@ export class Player {
 
   /** @private @type { Torch | undefined } */
   _lit_torch;
+
+  /** @private @type { boolean } */
+  _has_fainted = false;
+
+  /** @private @type { boolean } */
+  _is_dead = false;
 
   /**
    * @param { Point } position
@@ -196,12 +203,27 @@ export class Player {
     return this._damage;
   }
 
+  get has_fainted() {
+    return this._has_fainted;
+  }
+
+  get is_dead() {
+    return this._is_dead;
+  }
+
   /** The current power of the player
    * @return { number }
    */
   get total_weight() {
     return this._items.map(i => i.weight).reduce((pv, cv) => pv + cv) +
       (this._right_hand?._weight || 0) + (this._left_hand?._weight || 0);
+  }
+
+  /** determine current health and status of the player */
+  updatePlayer() {
+    if (this._damage > this._power) this._is_dead = true;
+    if (!this._has_fainted && (this.jiffy_score <= 3)) this._has_fainted = true;
+    if (this._has_fainted && (this.jiffy_score >= 10)) this._has_fainted = false;
   }
 
   /** Use item is left hand
@@ -264,7 +286,7 @@ export class Player {
     return true;
   }
 
-  /** Pull item to left hand using string name of the item
+  /** Pick up item from cell to left hand using string name of the item
    * @param { string } item 
    * @return { boolean } successful
    */
@@ -275,10 +297,15 @@ export class Player {
     index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
     this._left_hand = cell_inventory.splice(index, 1)[0];
+    if ((this._left_hand.full_name.toLowerCase() === "vision scroll") && this._level < 4) {
+      const cell_data = Game.instance.levels[3].getRandomOpenCell();
+      this._level = 4;
+      this._position = new Point(cell_data.col, cell_data.row);
+    }
     return true;
   }
 
-  /** Pull item to right hand using string name of the item
+  /** Pick up item from cell to right hand using string name of the item
    * @param { string } item 
    * @return { boolean } successful
    */
@@ -289,6 +316,11 @@ export class Player {
     index = index === -1 ? cell_inventory.findIndex(i => i.class_name === item) : index;
     if (index === -1) return false;
     this._right_hand = cell_inventory.splice(index, 1)[0];
+    if ((this._right_hand.full_name.toLowerCase() === "vision scroll") && this._level < 4) {
+      const cell_data = Game.instance.levels[3].getRandomOpenCell();
+      this._level = 4;
+      this._position = new Point(cell_data.col, cell_data.row);
+    }
     return true;
   }
 

@@ -52,6 +52,9 @@ export class Item {
   /** @return { string } */
   get class_name() { return this._class_name; }
 
+  /** @return { string } */
+  get full_name() { return `${this._subclass} ${this._class_name}`; }
+
   /** @return { number } */
   get weight() { return this._weight; }
 
@@ -70,6 +73,6 @@ export class Item {
 
   /** @return { string } */
   toString() {
-    return (this._revealed ? `${this._subclass} ` : '') + this._class_name;
+    return this._revealed ? this.full_name : this.class_name;
   }
 }
