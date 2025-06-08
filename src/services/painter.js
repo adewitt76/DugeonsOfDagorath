@@ -129,7 +129,7 @@ export class Painter {
   lineToRelative(x, y) {
     const old_current = this._current;
     const new_current = new Point(this._current.x + x, this._current.y + y);
-    this.drawLine(old_current.x, old_current.y, new_current.x, new_current.y);
+    this.draw_line(old_current.x, old_current.y, new_current.x, new_current.y);
     this._current = new_current;
   }
 
@@ -140,7 +140,7 @@ export class Painter {
    * @param { number } y coordinate
    */
   lineTo(x, y) {
-    this.drawLine(this._current.x, this._current.y, x, y);
+    this.draw_line(this._current.x, this._current.y, x, y);
     this._current = new Point(x, y);
   }
 
@@ -153,34 +153,18 @@ export class Painter {
     this.draw_pixel(x, y);
   }
 
-  /** 
-   * @private 
-   * @param { number } x coordinate
-   * @param { number } y coordinate
-   */
-  draw_pixel(x, y) {
-    this._stage.canvas.fillStyle = this._color;
-    this._stage.canvas.fillRect(x, y, 1, 1);
-  }
-
-  /** 
-   * @private 
+  /** Draws an unscaled line
    * @param { number } x1 start x coordinate
    * @param { number } y1 start y coordinate
    * @param { number } x2 end x coordinate
    * @param { number } y2 end y coordinate
-   */
+    */
   drawLine(x1, y1, x2, y2) {
-    const dot_frequency = this._is_magic ? 
-      (MAGIC_LIGHT_TABLE[this._magic_light_level] ? MAGIC_LIGHT_TABLE[this._magic_light_level][this._distance] : 0) : 
+    const dot_frequency = this._is_magic ?
+      (MAGIC_LIGHT_TABLE[this._magic_light_level] ? MAGIC_LIGHT_TABLE[this._magic_light_level][this._distance] : 0) :
       LIGHT_LEVEL_TABLE[this._light_level][this._distance];
-    
+
     if (dot_frequency === 0 || dot_frequency === undefined) return;
-    
-    x1 = this.scaleX(x1);
-    y1 = this.scaleY(y1);
-    x2 = this.scaleX(x2);
-    y2 = this.scaleY(y2);
 
     const dx = Math.abs(x2 - x1);
     const dy = Math.abs(y2 - y1);
@@ -221,6 +205,31 @@ export class Painter {
     if ((dot_counter % dot_frequency) === 0) {
       this.draw_pixel(x2, y2);
     }
+  }
+
+  /** 
+   * @private 
+   * @param { number } x coordinate
+   * @param { number } y coordinate
+   */
+  draw_pixel(x, y) {
+    this._stage.canvas.fillStyle = this._color;
+    this._stage.canvas.fillRect(x, y, 1, 1);
+  }
+
+  /** Draw a scaled line
+   * @private 
+   * @param { number } x1 start x coordinate
+   * @param { number } y1 start y coordinate
+   * @param { number } x2 end x coordinate
+   * @param { number } y2 end y coordinate
+   */
+  draw_line(x1, y1, x2, y2) {
+    x1 = this.scaleX(x1);
+    y1 = this.scaleY(y1);
+    x2 = this.scaleX(x2);
+    y2 = this.scaleY(y2);
+    this.drawLine(x1, y1, x2, y2);
   }
 
   /**

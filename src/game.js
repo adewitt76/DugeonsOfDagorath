@@ -11,6 +11,7 @@ import { DebugOverlay } from "./services/view_debug";
 import { Level } from "./models/level";
 import { DungeonGenerator } from "./services/dungeon_generator";
 import { Cell } from "./models/cell";
+import { AnimationManager } from "./services/animation_manager";
 
 export class Game {
 
@@ -75,7 +76,7 @@ export class Game {
    */
   play = (time_stamp) => {
     if (document.hasFocus()) {
-      this.draw_screen();
+      this.draw_screen(time_stamp);
       this.beat_heart(time_stamp);
       this._player.updatePlayer();
     }
@@ -83,9 +84,10 @@ export class Game {
   };
 
   /** Draw the screen
+    * @param { number } time_stamp 
     * @private
     */
-  draw_screen() {
+  draw_screen(time_stamp) {
     const stage = Stage.instance;
     const painter = new Painter();
     painter.color = 'white';
@@ -97,7 +99,12 @@ export class Game {
         break;
       case PLAYER_VIEW.main_view:
         const magic_illumination = this._player.lit_torch?.magic_illumination || 0;
-        CellView.instance.paint(this.players_cell, 0, this._player.light_level, magic_illumination, this._player.direction);
+        const animation_manager = AnimationManager.instance;
+        if (animation_manager.has_animation) {
+          animation_manager.paint(time_stamp, this._player.light_level);
+        } else {
+          CellView.instance.paint(this.players_cell, 0, this._player.light_level, magic_illumination, this._player.direction);
+        }
         StatusBar.instance.paint();
         Console.instance.paint();
         break;

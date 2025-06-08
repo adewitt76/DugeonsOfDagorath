@@ -8,6 +8,9 @@ import { SolarTorch } from "../items/torch_solar";
 import { Torch } from "../items/torch";
 import { VisionScroll } from "../items/scroll_vision";
 import { Game } from "../game";
+import { AnimationManager } from "../services/animation_manager";
+import { LeftToRightTurnAnimation } from "../animations/left_right_turn";
+import { RightToLeftTurnAnimation } from "../animations/right_left_turn";
 
 export const PLAYER_VIEW = Object.freeze({
   inventory_view: 'inventory_view',
@@ -467,6 +470,7 @@ export class Player {
   }
 
   turnLeft() {
+    AnimationManager.instance.add(new LeftToRightTurnAnimation());
     switch (this.direction) {
       case DIRECTION.north:
         this._direction = DIRECTION.west;
@@ -484,6 +488,7 @@ export class Player {
   }
 
   turnRight() {
+    AnimationManager.instance.add(new RightToLeftTurnAnimation());
     switch (this.direction) {
       case DIRECTION.north:
         this._direction = DIRECTION.east;
@@ -501,6 +506,8 @@ export class Player {
   }
 
   turnAround() {
+    AnimationManager.instance.add(new RightToLeftTurnAnimation());
+    AnimationManager.instance.add(new RightToLeftTurnAnimation());
     switch (this.direction) {
       case DIRECTION.north:
         this._direction = DIRECTION.south;
