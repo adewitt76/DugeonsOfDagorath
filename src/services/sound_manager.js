@@ -82,91 +82,71 @@ export class SoundGenerator {
   heart_1() {
     const oscillator1 = this._audio_context.createOscillator();
     const oscillator2 = this._audio_context.createOscillator();
-    const oscillator3 = this._audio_context.createOscillator();
     const gainNode = this._audio_context.createGain();
     const filter = this._audio_context.createBiquadFilter();
 
-    // Lower frequencies but still laptop-friendly
+    // Two oscillators for richer sound
     oscillator1.type = 'sine';
-    oscillator1.frequency.setValueAtTime(120, this._audio_context.currentTime);
-    oscillator1.frequency.exponentialRampToValueAtTime(80, this._audio_context.currentTime + 0.12);
+    oscillator1.frequency.setValueAtTime(60, this._audio_context.currentTime);
+    oscillator1.frequency.exponentialRampToValueAtTime(40, this._audio_context.currentTime + 0.1);
 
     oscillator2.type = 'triangle';
-    oscillator2.frequency.setValueAtTime(180, this._audio_context.currentTime);
-    oscillator2.frequency.exponentialRampToValueAtTime(100, this._audio_context.currentTime + 0.12);
+    oscillator2.frequency.setValueAtTime(80, this._audio_context.currentTime);
+    oscillator2.frequency.exponentialRampToValueAtTime(50, this._audio_context.currentTime + 0.1);
 
-    // Square wave for punch/thud character
-    oscillator3.type = 'square';
-    oscillator3.frequency.setValueAtTime(90, this._audio_context.currentTime);
-    oscillator3.frequency.exponentialRampToValueAtTime(60, this._audio_context.currentTime + 0.12);
-
-    // Lower cutoff for more muffled thud
+    // Low-pass filter for muffled effect
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(400, this._audio_context.currentTime);
+    filter.frequency.setValueAtTime(200, this._audio_context.currentTime);
 
-    // Punchier envelope for thud effect
+    // Envelope for thud effect
     gainNode.gain.setValueAtTime(0, this._audio_context.currentTime);
-    gainNode.gain.linearRampToValueAtTime(1.0, this._audio_context.currentTime + 0.005);
-    gainNode.gain.exponentialRampToValueAtTime(0.3, this._audio_context.currentTime + 0.04);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, this._audio_context.currentTime + 0.18);
+    gainNode.gain.linearRampToValueAtTime(0.7, this._audio_context.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, this._audio_context.currentTime + 0.15);
 
     oscillator1.connect(filter);
     oscillator2.connect(filter);
-    oscillator3.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(this._audio_context.destination);
 
     oscillator1.start(this._audio_context.currentTime);
     oscillator2.start(this._audio_context.currentTime);
-    oscillator3.start(this._audio_context.currentTime);
-    oscillator1.stop(this._audio_context.currentTime + 0.18);
-    oscillator2.stop(this._audio_context.currentTime + 0.18);
-    oscillator3.stop(this._audio_context.currentTime + 0.18);
+    oscillator1.stop(this._audio_context.currentTime + 0.15);
+    oscillator2.stop(this._audio_context.currentTime + 0.15);
   }
 
   heart_2() {
     const oscillator1 = this._audio_context.createOscillator();
     const oscillator2 = this._audio_context.createOscillator();
-    const oscillator3 = this._audio_context.createOscillator();
     const gainNode = this._audio_context.createGain();
     const filter = this._audio_context.createBiquadFilter();
 
-    // Mid-range for sharper thud - still audible on laptops
+    // Higher pitched for the "dub" sound
     oscillator1.type = 'sine';
-    oscillator1.frequency.setValueAtTime(200, this._audio_context.currentTime);
-    oscillator1.frequency.exponentialRampToValueAtTime(140, this._audio_context.currentTime + 0.08);
+    oscillator1.frequency.setValueAtTime(100, this._audio_context.currentTime);
+    oscillator1.frequency.exponentialRampToValueAtTime(70, this._audio_context.currentTime + 0.08);
 
     oscillator2.type = 'triangle';
-    oscillator2.frequency.setValueAtTime(280, this._audio_context.currentTime);
-    oscillator2.frequency.exponentialRampToValueAtTime(180, this._audio_context.currentTime + 0.08);
+    oscillator2.frequency.setValueAtTime(120, this._audio_context.currentTime);
+    oscillator2.frequency.exponentialRampToValueAtTime(80, this._audio_context.currentTime + 0.08);
 
-    // Square wave for snap/thud
-    oscillator3.type = 'square';
-    oscillator3.frequency.setValueAtTime(160, this._audio_context.currentTime);
-    oscillator3.frequency.exponentialRampToValueAtTime(110, this._audio_context.currentTime + 0.08);
-
-    // Moderate filter for punch
+    // Slightly higher cutoff for brighter sound
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(600, this._audio_context.currentTime);
+    filter.frequency.setValueAtTime(300, this._audio_context.currentTime);
 
-    // Sharp attack for thud snap
+    // Shorter, snappier envelope
     gainNode.gain.setValueAtTime(0, this._audio_context.currentTime);
-    gainNode.gain.linearRampToValueAtTime(1.0, this._audio_context.currentTime + 0.003);
-    gainNode.gain.exponentialRampToValueAtTime(0.2, this._audio_context.currentTime + 0.025);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, this._audio_context.currentTime + 0.12);
+    gainNode.gain.linearRampToValueAtTime(0.6, this._audio_context.currentTime + 0.005);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, this._audio_context.currentTime + 0.1);
 
     oscillator1.connect(filter);
     oscillator2.connect(filter);
-    oscillator3.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(this._audio_context.destination);
 
     oscillator1.start(this._audio_context.currentTime);
     oscillator2.start(this._audio_context.currentTime);
-    oscillator3.start(this._audio_context.currentTime);
-    oscillator1.stop(this._audio_context.currentTime + 0.12);
-    oscillator2.stop(this._audio_context.currentTime + 0.12);
-    oscillator3.stop(this._audio_context.currentTime + 0.12);
+    oscillator1.stop(this._audio_context.currentTime + 0.1);
+    oscillator2.stop(this._audio_context.currentTime + 0.1);
   }
   /** 
    * @param { HTMLAudioElement } source 

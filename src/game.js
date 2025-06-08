@@ -76,18 +76,18 @@ export class Game {
    */
   play = (time_stamp) => {
     if (document.hasFocus()) {
-      this.draw_screen(time_stamp);
+      this.paint_main_window(time_stamp);
       this.beat_heart(time_stamp);
       this._player.updatePlayer();
     }
     requestAnimationFrame(this.play);
   };
 
-  /** Draw the screen
+  /** Draw the main game canvas
     * @param { number } time_stamp 
     * @private
     */
-  draw_screen(time_stamp) {
+  paint_main_window(time_stamp) {
     const stage = Stage.instance;
     const painter = new Painter();
     painter.color = 'white';
