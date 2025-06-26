@@ -1,7 +1,7 @@
 // @ts-check
 import { Painter } from "../services/painter";
 import { Animation } from "./animation";
-import { FONT, print_character } from "../models/font";
+import { print_character } from "../models/font";
 import { MoonWizard } from "../creatures/moon_wizard";
 
 export class IntroAnimation extends Animation {

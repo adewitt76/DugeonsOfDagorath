@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Metal+Mania&display=swap');
+
+body { 
+  margin: 0; 
+  background: linear-gradient(135deg, #cc2222 0%, #aa1111 50%, #882222 100%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Metal Mania', cursive;
+  overflow: hidden;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  max-height: 95vh;
+}
+
+.title {
+  font-family: 'Creepster', cursive;
+  font-size: 2.2rem;
+  color: #FFD700;
+  text-shadow: 
+    2px 2px 0px #B8860B,
+    4px 4px 0px #8B4513,
+    6px 6px 10px rgba(0,0,0,0.8);
+  margin-bottom: 10px;
+  text-align: center;
+  letter-spacing: 1px;
+  transform: perspective(300px) rotateX(15deg);
+  line-height: 0.9;
+}
+
+.canvas-frame {
+  padding: 10px;
+  background: linear-gradient(45deg, #2c2c2c 0%, #1a1a1a 50%, #0a0a0a 100%);
+  border: 3px solid #8B4513;
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 0 10px rgba(0,0,0,0.8),
+    0 0 20px rgba(139, 69, 19, 0.5);
+  position: relative;
+}
+
+.canvas-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #FFD700, #B8860B, #FFD700);
+  border-radius: 10px;
+  z-index: -1;
+}
+
+canvas { 
+  border: none; 
+  image-rendering: pixelated; 
+  display: block;
+  border-radius: 4px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #FFD700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  margin-top: 8px;
+  text-align: center;
+  font-style: italic;
+}
+
+#debug-overlay { 
+  display: none; 
+  position: absolute; 
+  height: 100vh; 
+  width: 100vw; 
+  background-color: transparent; 
+  font-size: 16px; 
+  color: white; 
+}
+
+/* Retro scan lines effect */
+.canvas-frame::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,0,0.03) 2px,
+    rgba(0,255,0,0.03) 4px
+  );
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+/* Custom Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-overlay::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.modal-overlay:not([open]) {
+  display: none;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 50%, #0f0804 100%);
+  border: 4px solid #8B4513;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.3),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  max-width: 400px;
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #FFD700, #B8860B, #FFD700);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+.modal-title {
+  font-family: 'Creepster', cursive;
+  font-size: 2rem;
+  color: #FFD700;
+  text-shadow: 
+    2px 2px 0px #B8860B,
+    4px 4px 0px #8B4513,
+    6px 6px 10px rgba(0,0,0,0.8);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.modal-text {
+  font-family: 'Metal Mania', cursive;
+  font-size: 1.1rem;
+  color: #DDD;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+.prepare-button {
+  font-family: 'Metal Mania', cursive;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 50%, #3D1F07 100%);
+  color: #FFD700;
+  border: 3px solid #FFD700;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  box-shadow: 
+    0 0 15px rgba(255, 215, 0, 0.3),
+    inset 0 0 10px rgba(255, 215, 0, 0.1);
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+}
+
+.prepare-button:hover {
+  background: linear-gradient(135deg, #A0541A 0%, #6B350C 50%, #4A2409 100%);
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.5),
+    inset 0 0 15px rgba(255, 215, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.prepare-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.4),
+    inset 0 0 8px rgba(255, 215, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+}

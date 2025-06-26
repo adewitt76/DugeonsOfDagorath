@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CoCo 2 Canvas</title>
+    <title>Dungeons of Daggorath</title>
     <base href=".">
+    <link rel="stylesheet" href="styles.css">
     <audio id="scroll" preload="auto">
       <source src="assets/0E_whoop.wav" type="audio/wav"></source> 
     </audio>
@@ -21,16 +22,24 @@
     <audio id="buzz" preload="auto">
       <source src="assets/19_buzz.wav" type="audio/wav"></source> 
     </audio>
-    <style>
-    body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    canvas { border: none; image-rendering: pixelated; display: none; }
-    #debug-overlay { display: none; position: absolute; height: 100vh; 
-         width: 100vw; background-color: transparent; font-size: 16px; color: red; }
-    </style>
   </head>
   <body>
-    <canvas id="canvas_1" width="256" height="192"></canvas>
-    <canvas id="canvas_2" width="256" height="192"></canvas>
+    <dialog id="prepare-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2 class="modal-title">PREPARE!</h2>
+        <p class="modal-text">The dungeons await thee, brave adventurer.<br>Click to enter the realm of Daggorath...</p>
+        <button id="prepare-btn" class="prepare-button">ENTER THE DUNGEONS</button>
+      </div>
+    </dialog>
+    
+    <div class="game-container">
+      <h1 class="title">DUNGEONS OF<br>DAGGORATH</h1>
+      <div class="canvas-frame">
+        <canvas id="canvas_1" width="256" height="192"></canvas>
+        <canvas id="canvas_2" width="256" height="192"></canvas>
+      </div>
+      <div class="subtitle">Enter if ye dare...</div>
+    </div>
     <script type="module" src="script.js"></script>
     <div id="debug-overlay"></div>
   </body>
