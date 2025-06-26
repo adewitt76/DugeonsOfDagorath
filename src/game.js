@@ -12,6 +12,16 @@ import { Level } from "./models/level";
 import { DungeonGenerator } from "./services/dungeon_generator";
 import { Cell } from "./models/cell";
 import { AnimationManager } from "./services/animation_manager";
+import { IntroStatusBar } from "./services/view_intro_status_bar";
+import { IntroConsole } from "./services/view_intro_console";
+import { Animation } from "./animations/animation";
+import { IntroAnimation } from "./animations/intro";
+
+const GAME_STATUS = Object.freeze({
+  intro: "intro",
+  playing: "playing",
+  game_over: "game_over"
+});
 
 export class Game {
 
@@ -30,6 +40,12 @@ export class Game {
   /** @private @type { number } the time stamp of the last heart beat */
   _last_heart_beat_time = 0;
 
+  /** @private @type { 'intro' | 'playing' | 'game_over' } */
+  _game_status;
+
+  /** @private @type { number } */
+  _start_time;
+
   /** @private */
   constructor() {
     const dungeon_generator = new DungeonGenerator();
@@ -39,6 +55,7 @@ export class Game {
     this._player = Player.initialize(starting_position, starting_direction);
     this._show_debug = false;
     this._map_view = new MapView();
+    this._game_status = GAME_STATUS.intro;
   }
 
   /**
@@ -65,23 +82,57 @@ export class Game {
     return this._levels[this._player.level - 1].getCell(this._player.position.x, this._player.position.y);
   }
 
-  /** Start the game */
-  start() {
-    requestAnimationFrame(this.play);
+  /** Start the game
+   * @param { number } time_stamp the time stamp given by requestAnimationFrame()
+   */
+  start = (time_stamp) => {
+    if (!this._start_time) {
+      this._start_time = time_stamp;
+      AnimationManager.instance.add(new IntroAnimation());
+    }
+    switch (this._game_status) {
+      case GAME_STATUS.intro:
+        this.play_intro(time_stamp);
+        break;
+      case GAME_STATUS.playing:
+        this.play_game(time_stamp);
+        break;
+    }
+    requestAnimationFrame(this.start);
   }
 
   /** The main game loop. This relies on the browsers animation loop.
    * @param { number } time_stamp the time stamp given by requestAnimationFrame()
    * @private
    */
-  play = (time_stamp) => {
+  play_intro = (time_stamp) => {
+    // TODO: intro 20 seconds with last 5 seconds saying prepare
+    // time line 5 second phase in of wizard
+    // 4 seconds display 'I dare the'
+    // at 10 seconds phase out wizard
+    // at 15 seconds display 'prepare'
+    const stage = Stage.instance;
+    const painter = new Painter();
+    const animation_manager = AnimationManager.instance;
+    painter.color = 'white';
+    if (animation_manager.has_animation) animation_manager.paint(time_stamp, 11);
+    IntroStatusBar.instance.paint();
+    if (time_stamp > this._start_time + 5000 && time_stamp <= this._start_time + 9000) IntroConsole.instance.paint();
+    stage.swapBuffers();
+    if (time_stamp > this._start_time + 21000) this._game_status = GAME_STATUS.playing;
+  }
+
+  /** The main game loop. This relies on the browsers animation loop.
+   * @param { number } time_stamp the time stamp given by requestAnimationFrame()
+   * @private
+   */
+  play_game = (time_stamp) => {
     if (document.hasFocus()) {
       this.paint_main_window(time_stamp);
       this.beat_heart(time_stamp);
       this._player.updatePlayer();
     }
-    requestAnimationFrame(this.play);
-  };
+  }
 
   /** Draw the main game canvas
     * @param { number } time_stamp 
