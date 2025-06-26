@@ -24,7 +24,7 @@ export class MoonWizard extends Creature {
     painter.distance = distance;
     painter.lightLevel = light_level;
 
-    // Crescent on scepter point
+    // Crescent on scepter point - part of wizard animation
     painter.moveTo(98, 46);
     painter.lineTo(100, 50);
     painter.lineTo(98, 54);
@@ -42,7 +42,7 @@ export class MoonWizard extends Creature {
     painter.lineTo(98, 50);
     painter.lineTo(98, 46);
 
-    // Crescent on cape
+    // Crescent on cape - part of wizard animation
     painter.moveTo(154, 104);
     painter.lineTo(156, 108);
     painter.lineTo(154, 112);
@@ -60,7 +60,8 @@ export class MoonWizard extends Creature {
     painter.lineTo(154, 108);
     painter.lineTo(154, 104);
 
-    // Main wizard body
+    // Main Wizard vector list - transposed coordinates like the crescents
+    // Initial wizard outline (transposed from assembly: x,y becomes y,x)
     painter.moveTo(124, 64);
     painter.lineTo(120, 72);
     painter.lineTo(120, 64);
@@ -83,57 +84,57 @@ export class MoonWizard extends Creature {
     painter.lineTo(134, 48);
     painter.lineTo(136, 44);
 
-    // Cape and scepter shaft
-    painter.moveTo(48, 134);
-    painter.lineTo(54, 142);
-    painter.lineTo(116, 164);
+    // Cape and scepter shaft (transposed: x,y becomes y,x)
+    painter.moveTo(134, 48);
+    painter.lineTo(142, 54);
+    painter.lineTo(164, 116);
     painter.lineTo(132, 132);
-    painter.lineTo(130, 118);
-    painter.lineTo(120, 94);
-    painter.lineTo(90, 110);
+    painter.lineTo(118, 130);
+    painter.lineTo(94, 120);
+    painter.lineTo(110, 90);
     painter.lineTo(132, 132);
-    painter.lineTo(72, 106);
+    painter.lineTo(106, 72);
 
-    // Hand detail
-    painter.moveTo(64, 102);
-    painter.lineTo(66, 100);
-    painter.lineTo(56, 94);
-    painter.lineTo(54, 96);
-    painter.lineTo(64, 102);
+    // Hand detail (transposed: x,y becomes y,x)
+    painter.moveTo(102, 64);
+    painter.lineTo(100, 66);
+    painter.lineTo(94, 56);
+    painter.lineTo(96, 54);
+    painter.lineTo(102, 64);
 
-    painter.moveTo(66, 102);
-    painter.lineTo(68, 98);
-    painter.lineTo(74, 102);
-    painter.lineTo(76, 104);
-    painter.lineTo(90, 110);
+    painter.moveTo(102, 66);
+    painter.lineTo(98, 68);
+    painter.lineTo(102, 74);
+    painter.lineTo(104, 76);
+    painter.lineTo(110, 90);
 
-    // Cape continuation
-    painter.moveTo(88, 112);
-    painter.lineTo(72, 120);
+    // Cape continuation (transposed: x,y becomes y,x)
+    painter.moveTo(112, 88);
+    painter.lineTo(120, 72);
 
-    // Hat
-    painter.moveTo(62, 132);
-    painter.lineTo(20, 128);
-    painter.lineTo(52, 122);
-    painter.lineTo(64, 122);
-    painter.lineTo(60, 124);
-    painter.lineTo(114, 128);
-    painter.lineTo(80, 130);
-    painter.lineTo(68, 130);
-    painter.lineTo(62, 132);
+    // Hat (transposed: x,y becomes y,x)
+    painter.moveTo(132, 62);
+    painter.lineTo(128, 20);
+    painter.lineTo(122, 52);
+    painter.lineTo(122, 64);
+    painter.lineTo(124, 60);
+    painter.lineTo(128, 114);
+    painter.lineTo(130, 80);
+    painter.lineTo(130, 68);
+    painter.lineTo(132, 62);
 
-    // Face detail
-    painter.moveTo(40, 130);
-    painter.lineTo(38, 128);
-    painter.lineTo(40, 124);
-    painter.lineTo(42, 126);
-    painter.lineTo(40, 130);
-    painter.lineTo(46, 128);
-    painter.lineTo(50, 128);
-    painter.lineTo(50, 126);
-    painter.lineTo(42, 126);
-    painter.lineTo(40, 124);
-    painter.lineTo(46, 126);
+    // Face detail (transposed: x,y becomes y,x)
+    painter.moveTo(130, 40);
+    painter.lineTo(128, 38);
+    painter.lineTo(124, 40);
+    painter.lineTo(126, 42);
+    painter.lineTo(130, 40);
+    painter.lineTo(128, 46);
+    painter.lineTo(128, 50);
+    painter.lineTo(126, 50);
+    painter.lineTo(126, 42);
+    painter.lineTo(124, 40);
+    painter.lineTo(126, 46);
   }
 
   /**

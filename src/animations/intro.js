@@ -2,6 +2,7 @@
 import { Painter } from "../services/painter";
 import { Animation } from "./animation";
 import { FONT, print_character } from "../models/font";
+import { MoonWizard } from "../creatures/moon_wizard";
 
 export class IntroAnimation extends Animation {
 
@@ -25,11 +26,15 @@ export class IntroAnimation extends Animation {
   /** @private @type { HTMLAudioElement } */
   _buzz_audio;
 
+  /** @private @type { MoonWizard } */
+  _moon_wizard;
+
   constructor() {
     super();
     this._painter = new Painter();
     this._painter.color = 'white';
     this._buzz_audio = /** @type {HTMLAudioElement}*/(document.getElementById('buzz'));
+    this._moon_wizard = new MoonWizard();
   }
 
   /** @param { number } af_time_stamp Animation frames time stamp
@@ -112,124 +117,8 @@ export class IntroAnimation extends Animation {
       }
     }
 
-    // Store original light level and set wizard light level
-    const originalLightLevel = this._painter.lightLevel;
-    this._painter.lightLevel = wizardLightLevel;
-
-    // Crescent on scepter point - part of wizard animation
-    this._painter.moveTo(98, 46);
-    this._painter.lineTo(100, 50);
-    this._painter.lineTo(98, 54);
-    this._painter.lineTo(92, 58);
-    this._painter.lineTo(86, 56);
-    this._painter.lineTo(82, 48);
-    this._painter.lineTo(86, 40);
-    this._painter.lineTo(90, 38);
-    this._painter.lineTo(94, 40);
-    this._painter.lineTo(92, 40);
-    this._painter.lineTo(88, 42);
-    this._painter.lineTo(86, 48);
-    this._painter.lineTo(88, 52);
-    this._painter.lineTo(92, 54);
-    this._painter.lineTo(98, 50);
-    this._painter.lineTo(98, 46);
-
-    // Crescent on cape - part of wizard animation
-    this._painter.moveTo(154, 104);
-    this._painter.lineTo(156, 108);
-    this._painter.lineTo(154, 112);
-    this._painter.lineTo(148, 116);
-    this._painter.lineTo(142, 114);
-    this._painter.lineTo(138, 106);
-    this._painter.lineTo(142, 98);
-    this._painter.lineTo(146, 96);
-    this._painter.lineTo(150, 98);
-    this._painter.lineTo(148, 98);
-    this._painter.lineTo(144, 100);
-    this._painter.lineTo(142, 106);
-    this._painter.lineTo(146, 110);
-    this._painter.lineTo(150, 112);
-    this._painter.lineTo(154, 108);
-    this._painter.lineTo(154, 104);
-
-    // Main Wizard vector list - transposed coordinates like the crescents
-    // Initial wizard outline (transposed from assembly: x,y becomes y,x)
-    this._painter.moveTo(124, 64);
-    this._painter.lineTo(120, 72);
-    this._painter.lineTo(120, 64);
-    this._painter.lineTo(110, 78);
-    this._painter.lineTo(102, 64);
-    this._painter.lineTo(110, 58);
-    this._painter.lineTo(118, 54);
-    this._painter.lineTo(120, 50);
-    this._painter.lineTo(122, 46);
-    this._painter.lineTo(116, 40);
-    this._painter.lineTo(108, 42);
-    this._painter.lineTo(120, 28);
-    this._painter.lineTo(126, 28);
-    this._painter.moveTo(130, 28);
-    this._painter.lineTo(136, 28);
-    this._painter.lineTo(146, 36);
-    this._painter.lineTo(148, 50);
-    this._painter.lineTo(136, 44);
-    this._painter.lineTo(132, 46);
-    this._painter.lineTo(134, 48);
-    this._painter.lineTo(136, 44);
-
-    // Cape and scepter shaft (transposed: x,y becomes y,x)
-    this._painter.moveTo(134, 48);
-    this._painter.lineTo(142, 54);
-    this._painter.lineTo(164, 116);
-    this._painter.lineTo(132, 132);
-    this._painter.lineTo(118, 130);
-    this._painter.lineTo(94, 120);
-    this._painter.lineTo(110, 90);
-    this._painter.lineTo(132, 132);
-    this._painter.lineTo(106, 72);
-
-    // Hand detail (transposed: x,y becomes y,x)
-    this._painter.moveTo(102, 64);
-    this._painter.lineTo(100, 66);
-    this._painter.lineTo(94, 56);
-    this._painter.lineTo(96, 54);
-    this._painter.lineTo(102, 64);
-
-    this._painter.moveTo(102, 66);
-    this._painter.lineTo(98, 68);
-    this._painter.lineTo(102, 74);
-    this._painter.lineTo(104, 76);
-    this._painter.lineTo(110, 90);
-
-    // Cape continuation (transposed: x,y becomes y,x)
-    this._painter.moveTo(112, 88);
-    this._painter.lineTo(120, 72);
-
-    // Hat (transposed: x,y becomes y,x)
-    this._painter.moveTo(132, 62);
-    this._painter.lineTo(128, 20);
-    this._painter.lineTo(122, 52);
-    this._painter.lineTo(122, 64);
-    this._painter.lineTo(124, 60);
-    this._painter.lineTo(128, 114);
-    this._painter.lineTo(130, 80);
-    this._painter.lineTo(130, 68);
-    this._painter.lineTo(132, 62);
-
-    // Face detail (transposed: x,y becomes y,x)
-    this._painter.moveTo(130, 40);
-    this._painter.lineTo(128, 38);
-    this._painter.lineTo(124, 40);
-    this._painter.lineTo(126, 42);
-    this._painter.lineTo(130, 40);
-    this._painter.lineTo(128, 46);
-    this._painter.lineTo(128, 50);
-    this._painter.lineTo(126, 50);
-    this._painter.lineTo(126, 42);
-    this._painter.lineTo(124, 40);
-    this._painter.lineTo(126, 46);
-
-    // Restore original light level
-    this._painter.lightLevel = originalLightLevel;
+    // Paint the wizard using MoonWizard's paint method
+    this._moon_wizard.paint(this._painter, 1, wizardLightLevel);
 
     // Display "Prepare!" text during final 5 seconds
     if (elapsed_time >= 15000) {
