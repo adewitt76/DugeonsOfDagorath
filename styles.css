@@ -40,7 +40,7 @@ body {
 
 .canvas-frame {
   padding: 10px;
-  background: linear-gradient(45deg, #2c2c2c 0%, #1a1a1a 50%, #0a0a0a 100%);
+  background: white;
   border: 3px solid #8B4513;
   border-radius: 8px;
   box-shadow: 
