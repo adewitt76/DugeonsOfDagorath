@@ -149,7 +149,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - **Original Developers**: Douglas J. Morgan, Keith S. Kiyohara, and Phil Landmeier
 - **Original Publisher**: Tandy/Radio Shack
 - **Graphics**: April Landmeier (monster designs)
-- **Assembly Source**: [boisy/dungeons-of-daggorath-asm](https://github.com/MichaelSpencerJr/DungeonsOfDaggorath) for reference
+- **Assembly Source**: [MichaelSpencerJr/DungeonsOfDaggorath](https://github.com/MichaelSpencerJr/DungeonsOfDaggorath) for reference
 
 ## Historical Significance
 
