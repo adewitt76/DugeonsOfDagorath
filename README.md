@@ -16,7 +16,7 @@ Dungeons of Daggorath was developed by Douglas J. Morgan and Keith S. Kiyohara f
 
 The game gained renewed fame as a plot point in Ernest Cline's novel "Ready Player One."
 
-**Reference Material**: The original assembly source code is available at [dungeons-of-daggorath-asm](https://github.com/boisy/dungeons-of-daggorath-asm) and can be consulted for understanding game mechanics and implementation details.
+**Reference Material**: The original assembly source code is available at [dungeons-of-daggorath-asm](https://github.com/MichaelSpencerJr/DungeonsOfDaggorath) and can be consulted for understanding game mechanics and implementation details.
 
 ## This JavaScript Port
 
@@ -149,7 +149,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - **Original Developers**: Douglas J. Morgan, Keith S. Kiyohara, and Phil Landmeier
 - **Original Publisher**: Tandy/Radio Shack
 - **Graphics**: April Landmeier (monster designs)
-- **Assembly Source**: [boisy/dungeons-of-daggorath-asm](https://github.com/boisy/dungeons-of-daggorath-asm) for reference
+- **Assembly Source**: [boisy/dungeons-of-daggorath-asm](https://github.com/MichaelSpencerJr/DungeonsOfDaggorath) for reference
 
 ## Historical Significance
 
