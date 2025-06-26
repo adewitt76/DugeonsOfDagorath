@@ -15,13 +15,13 @@ export class IntroAnimation extends Animation {
 
   /** @private @type { boolean } */
   _wizard_sound_played = false;
-  
+
   /** @private @type { boolean } */
   _explosion_sound_played = false;
-  
+
   /** @private @type { boolean } */
   _fadeout_explosion_played = false;
-  
+
   /** @private @type { HTMLAudioElement } */
   _buzz_audio;
 
@@ -29,7 +29,7 @@ export class IntroAnimation extends Animation {
     super();
     this._painter = new Painter();
     this._painter.color = 'white';
-    this._buzz_audio = document.getElementById('buzz');
+    this._buzz_audio = /** @type {HTMLAudioElement}*/(document.getElementById('buzz'));
   }
 
   /** @param { number } af_time_stamp Animation frames time stamp
@@ -51,19 +51,19 @@ export class IntroAnimation extends Animation {
     }
     const elapsed_time = af_time_stamp - this._start_time;
     const elapsed_percentage = elapsed_time / this._animation_length;
-    
+
     // Play wizard sound at start of fade-in (BDLBDL from assembly)
     if (elapsed_time > 100 && !this._wizard_sound_played) {
-      const scrollAudio = document.getElementById('scroll');
+      const scrollAudio = /** @type {HTMLAudioElement}*/(document.getElementById('scroll'));
       if (scrollAudio) scrollAudio.play();
       this._wizard_sound_played = true;
     }
-    
+
     // Beam-in effect using light levels: 5s fade-in, 5s full light, 5s fade-out, 5s remaining
     // Ensure light_level is within valid bounds (0-13)
     const clampedLightLevel = Math.max(0, Math.min(13, light_level));
     let wizardLightLevel = clampedLightLevel;
-    
+
     if (elapsed_time < 5000) {
       // First 5 seconds: fade in
       wizardLightLevel = Math.floor((elapsed_time / 5000) * clampedLightLevel);
@@ -71,7 +71,7 @@ export class IntroAnimation extends Animation {
       // Next 5 seconds: full light
       // Play explosion when wizard is fully faded in
       if (elapsed_time > 5100 && !this._explosion_sound_played) {
-        const explosionAudio = document.getElementById('explosion_1');
+        const explosionAudio = /** @type {HTMLAudioElement}*/(document.getElementById('explosion_1'));
         if (explosionAudio) explosionAudio.play();
         this._explosion_sound_played = true;
       }
@@ -80,7 +80,7 @@ export class IntroAnimation extends Animation {
       // Next 5 seconds: fade out
       // Play explosion at start of fade-out
       if (elapsed_time > 10100 && !this._fadeout_explosion_played) {
-        const explosionAudio = document.getElementById('explosion_1');
+        const explosionAudio = /** @type {HTMLAudioElement}*/(document.getElementById('explosion_1'));
         if (explosionAudio) explosionAudio.play();
         this._fadeout_explosion_played = true;
       }
@@ -237,7 +237,7 @@ export class IntroAnimation extends Animation {
       const text = "PREPARE!";
       const startX = 98; // Centered horizontally (moved left)
       const startY = 86; // Centered vertically (moved up)
-      
+
       for (let i = 0; i < text.length; i++) {
         print_character(text[i], startX + (i * 6), startY, false);
       }
